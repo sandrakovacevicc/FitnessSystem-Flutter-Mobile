@@ -1,0 +1,121 @@
+import 'package:flutter/material.dart';
+import 'package:fytness_system/models/session.dart';
+
+class SessionCard extends StatelessWidget {
+  final Session session;
+
+  const SessionCard({Key? key, required this.session}) : super(key: key);
+
+  // Map of training program names to their corresponding image assets
+  String getProgramImage(String programName) {
+    return {
+      'HIIT': 'assets/hiit.jpg',
+      'Yoga': 'assets/yoga.jpg',
+      'Pilates': 'assets/pilates.jpg',
+      'Crossfit': 'assets/crossfit.jpg',
+      'Spinning': 'assets/spinning.jpg',
+      // Add other programs and images here
+    }[programName] ?? 'assets/default.jpg'; // Default image if program not found
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    String imageUrl = getProgramImage(session.trainingProgramName);
+
+    return Card(
+      color: Colors.black,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      elevation: 3,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            // Image on the left side
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10.0),
+              child: Image.asset(
+                imageUrl,
+                width: 80,
+                height: 80,
+                fit: BoxFit.cover,
+              ),
+            ),
+            const SizedBox(width: 10),
+            // Program details on the right side
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    session.trainingProgramName,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Trainer: ${session.trainerName} ${session.trainerSurname}',
+                    style: const TextStyle(
+                      color: Colors.white70,
+                      fontSize: 12,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      const Icon(Icons.access_time, color: Colors.white70, size: 18),
+                      const SizedBox(width: 4),
+                      Text(
+                        '${session.time.format(context)} - ${session.duration} mins',
+                        style: const TextStyle(
+                          color: Colors.white70,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            // "Book" button and availability information
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    // Implement booking logic here
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFE6FE58),
+                    foregroundColor: Colors.black,
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    textStyle: const TextStyle(
+                      fontSize: 12,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
+                  child: const Text('Book'),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  '${session.capacity} Spaces left',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

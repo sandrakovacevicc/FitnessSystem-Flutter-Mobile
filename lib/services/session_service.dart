@@ -1,0 +1,27 @@
+import 'dart:convert';
+import 'package:fytness_system/models/session.dart';
+import 'package:http/http.dart' as http;
+
+class SessionService {
+  final String baseUrl;
+
+  SessionService({required this.baseUrl});
+
+  Future<List<Session>> fetchSessions(String date) async {
+    final String url = '$baseUrl/sessions?filterBy=Date&filterValue=$date&sortBy=Time&ascending=true&pageNumber=1&pageSize=10';
+
+    final response = await http.get(Uri.parse(url));
+
+    print('Request URL: $url'); // Dodajte ovo za debagovanje
+    print('Response status: ${response.statusCode}'); // Dodajte ovo za debagovanje
+    print('Response body: ${response.body}'); // Dodajte ovo za debagovanje
+
+    if (response.statusCode == 200) {
+      List<dynamic> body = jsonDecode(response.body);
+      return body.map((json) => Session.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to load sessions');
+    }
+  }
+
+}
