@@ -16,6 +16,7 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   int _selectedIndex = 3;
   bool _showMembership = false;
+  final MembershipPackageService membershipPackageService = MembershipPackageService();
 
   late TextEditingController _nameController;
   late TextEditingController _surnameController;
@@ -51,7 +52,7 @@ class _ProfileState extends State<Profile> {
     _membershipNumberOfMonthsController = TextEditingController();
 
     if (user?.role == 'Client' && user?.membershipPackageId != null) {
-      fetchMembershipPackageById(user!.membershipPackageId!).then((membershipPackage) {
+      membershipPackageService.fetchMembershipPackageById(user!.membershipPackageId!).then((membershipPackage) {
         if (membershipPackage != null) {
           setState(() {
             _membershipNameController.text = membershipPackage.name ?? '';
@@ -77,7 +78,7 @@ class _ProfileState extends State<Profile> {
         Navigator.pushReplacementNamed(context, 'trainings/');
         break;
       case 2:
-      //Navigator.pushReplacementNamed(context, '/reservations');
+        Navigator.pushReplacementNamed(context, 'reservations/');
         break;
       case 3:
         Navigator.pushReplacementNamed(context, 'profile/');

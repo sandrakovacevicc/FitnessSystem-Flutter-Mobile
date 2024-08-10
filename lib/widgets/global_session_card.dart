@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:fytness_system/models/session.dart';
+import 'package:fytness_system/screens/training_program.dart';
 
 class SessionCard extends StatelessWidget {
   final Session session;
 
-  const SessionCard({Key? key, required this.session}) : super(key: key);
+  const SessionCard({super.key, required this.session});
 
-  // Map of training program names to their corresponding image assets
+
   String getProgramImage(String programName) {
     return {
       'HIIT': 'assets/hiit.jpg',
@@ -14,8 +15,8 @@ class SessionCard extends StatelessWidget {
       'Pilates': 'assets/pilates.jpg',
       'Crossfit': 'assets/crossfit.jpg',
       'Spinning': 'assets/spinning.jpg',
-      // Add other programs and images here
-    }[programName] ?? 'assets/default.jpg'; // Default image if program not found
+
+    }[programName] ?? 'assets/default.jpg';
   }
 
   @override
@@ -58,7 +59,7 @@ class SessionCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Trainer: ${session.trainerName} ${session.trainerSurname}',
+                    'Trainer: ${session.trainerName}',
                     style: const TextStyle(
                       color: Colors.white70,
                       fontSize: 12,
@@ -87,7 +88,12 @@ class SessionCard extends StatelessWidget {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    // Implement booking logic here
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                        builder: (context) => SessionDetailPage(sessionId : session.sessionId),
+                      ),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFE6FE58),

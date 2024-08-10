@@ -2,11 +2,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class GlobalTextForm extends StatelessWidget {
-  const GlobalTextForm({super.key, required this.controller, required this.text, required this.textInputType, required this.obscure});
+  const GlobalTextForm({
+    super.key,
+    required this.controller,
+    required this.text,
+    required this.textInputType,
+    required this.obscure,
+    this.validator,
+  });
+
   final TextEditingController controller;
   final String text;
   final TextInputType textInputType;
   final bool obscure;
+  final FormFieldValidator<String>? validator;
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +48,7 @@ class GlobalTextForm extends StatelessWidget {
         style: const TextStyle(
           color: Color(0xFFFEF9F1),
         ),
+        validator: validator,
       ),
     );
   }

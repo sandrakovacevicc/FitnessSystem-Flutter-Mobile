@@ -24,4 +24,14 @@ class SessionService {
     }
   }
 
+  Future<Session> fetchSessionById(int sessionId) async {
+    final response = await http.get(Uri.parse('$baseUrl/sessions/$sessionId'));
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = json.decode(response.body);
+      return Session.fromJson(data);
+    } else {
+      throw Exception('Failed to load session');
+    }
+  }
+
 }

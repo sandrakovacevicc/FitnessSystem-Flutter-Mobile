@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:fytness_system/models/membership_package.dart';
+import 'package:fytness_system/services/auth_service.dart';
 import 'package:fytness_system/services/membership_package_service.dart';
 import 'package:fytness_system/utils/global_colors.dart';
 import 'package:fytness_system/widgets/global_button.dart';
-import 'package:fytness_system/widgets/global_card.dart';
+import 'package:fytness_system/widgets/global_membership_package_card.dart';
+import 'package:fytness_system/models/user.dart';
 
 class MembershipPackages extends StatefulWidget {
-  const MembershipPackages({super.key});
+  final User user;
+
+  const MembershipPackages({super.key, required this.user});
 
   @override
   State<MembershipPackages> createState() => _MembershipPackagesState();
@@ -15,11 +19,41 @@ class MembershipPackages extends StatefulWidget {
 class _MembershipPackagesState extends State<MembershipPackages> {
   late Future<List<MembershipPackage>> futureMembershipPackages;
   int? selectedIndex;
+  final AuthService _authService = AuthService();
 
   @override
   void initState() {
     super.initState();
-    futureMembershipPackages = fetchMembershipPackages();
+    futureMembershipPackages = MembershipPackageService().fetchMembershipPackages();
+  }
+
+  Future<void> _createAccount() async {
+    if (selectedIndex == null) {
+      // Show an error message if no package is selected
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please select a membership package.')),
+      );
+      return;
+    }
+
+    // Get the selected package ID
+    final selectedPackageId = (await futureMembershipPackages)[selectedIndex!].membershipPackageId;
+
+    // Update the User object with the selected membership package ID
+    User updatedUser = widget.user.copyWith(membershipPackageId: selectedPackageId);
+
+    // Call the sign-up method with the updated user data
+    final signUpResponse = await _authService.signUp(updatedUser);
+
+    if (signUpResponse != null) {
+      // Navigate to the main screen on successful sign-up
+      Navigator.pushNamed(context, 'mainScreen/');
+    } else {
+      // Show an error message on sign-up failure
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Failed to create an account.')),
+      );
+    }
   }
 
   @override
@@ -67,7 +101,9 @@ class _MembershipPackagesState extends State<MembershipPackages> {
                                 ),
                                 borderRadius: BorderRadius.circular(25.0),
                               ),
-                              child: GlobalCard(membershipPackage: snapshot.data![index]),
+                              child: GlobalCard(
+                                membershipPackage: snapshot.data![index],
+                              ),
                             ),
                           ),
                         );
@@ -78,9 +114,7 @@ class _MembershipPackagesState extends State<MembershipPackages> {
                     padding: const EdgeInsets.all(16.0),
                     child: GlobalButton(
                       text: 'Create Account',
-                      onPressed: () {
-                        Navigator.pushNamed(context, 'mainScreen/');
-                      },
+                      onPressed: _createAccount,
                       width: double.infinity,
                     ),
                   ),

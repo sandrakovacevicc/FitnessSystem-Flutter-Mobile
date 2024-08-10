@@ -46,7 +46,7 @@ class _LoginState extends State<Login> {
 
         final user = await authService.getUserFromJwt(response.jwtToken);
         if (user != null) {
-          final userData = await authService.getUserData(user.id, response.jwtToken, role);
+          final userData = await authService.getUserData(user.jmbg, response.jwtToken, role);
           if (userData != null) {
             User updatedUser;
             if (role == 'Client') {

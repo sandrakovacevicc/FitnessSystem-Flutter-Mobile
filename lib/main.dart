@@ -5,10 +5,12 @@ import 'package:fytness_system/screens/home.dart';
 import 'package:fytness_system/screens/main_screen.dart';
 import 'package:fytness_system/screens/membership_packages.dart';
 import 'package:fytness_system/screens/profile.dart';
+import 'package:fytness_system/screens/reservations.dart';
 import 'package:fytness_system/screens/sign_in.dart';
 import 'package:fytness_system/screens/trainings.dart';
 import 'package:provider/provider.dart';
 import 'package:fytness_system/providers/user_provider.dart';
+import 'package:fytness_system/models/user.dart';
 
 class MyHttpOverrides extends HttpOverrides {
   @override
@@ -28,14 +30,37 @@ void main() {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         initialRoute: 'home/',
-        routes: {
-          'home/' : (context) => const Home(),
-          'login/' : (context) => const Login(),
-          'signIn/' : (context) => const SignIn(),
-          'membershipPackages/' : (context) => const MembershipPackages(),
-          'mainScreen/': (context) => const MainScreen(),
-          'profile/' : (context) => const Profile(),
-          'trainings/' : (context) => const Trainings(),
+        onGenerateRoute: (settings) {
+          switch (settings.name) {
+            case 'membershipPackages/':
+              final args = settings.arguments as User;
+              return MaterialPageRoute(
+                builder: (context) => MembershipPackages(user: args),
+              );
+            default:
+              return MaterialPageRoute(
+                builder: (context) {
+                  switch (settings.name) {
+                    case 'home/':
+                      return const Home();
+                    case 'login/':
+                      return const Login();
+                    case 'signIn/':
+                      return const SignIn();
+                    case 'mainScreen/':
+                      return const MainScreen();
+                    case 'profile/':
+                      return const Profile();
+                    case 'trainings/':
+                      return const Trainings();
+                    case 'reservations/':
+                      return const Reservations();
+                    default:
+                      return const Home(); // Default route
+                  }
+                },
+              );
+          }
         },
       ),
     ),

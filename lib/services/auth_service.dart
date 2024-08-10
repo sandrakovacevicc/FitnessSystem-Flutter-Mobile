@@ -55,11 +55,10 @@ class AuthService {
 
       if (role == 'Client') {
         user = User(
-          id: decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/userdata'],
           name: '',
           surname: '',
           email: decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'],
-          jmbg: '',
+          jmbg: decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/userdata'],
           role: role,
           membershipPackageId: null,
           birthdate: null,
@@ -68,11 +67,10 @@ class AuthService {
         );
       } else if (role == 'Trainer') {
         user = User(
-          id: decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/userdata'],
           name: '',
           surname: '',
           email: decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'],
-          jmbg: '',
+          jmbg: decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/userdata'],
           role: role,
           membershipPackageId: null,
           birthdate: null,
@@ -81,11 +79,10 @@ class AuthService {
         );
       } else {
         user = User(
-          id: decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/userdata'],
           name: '',
           surname: '',
           email: decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'],
-          jmbg: '',
+          jmbg: decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/userdata'],
           role: role,
           membershipPackageId: null,
           birthdate: null,
@@ -127,6 +124,31 @@ class AuthService {
     } else {
       print('Failed to load user data: ${response.body}');
       return null;
+    }
+  }
+
+  Future<bool> signUp(User user) async {
+    final url = Uri.parse('https://10.0.2.2:7083/api/auth/register');
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'email': user.email,
+        'password': 'your_password_here',
+        'name': user.name,
+        'surname': user.surname,
+        'phoneNumber': user.mobileNumber,
+        'jmbg': user.jmbg,
+        'birthdate': user.birthdate?.toIso8601String(),
+        'membershipPackageId': user.membershipPackageId,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      print('Sign-up failed: ${response.body}');
+      return false;
     }
   }
 

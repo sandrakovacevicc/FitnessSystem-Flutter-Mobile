@@ -6,6 +6,7 @@ import 'package:fytness_system/services/membership_package_service.dart';
 class UserProvider with ChangeNotifier {
   User? _user;
   MembershipPackage? _membershipPackage;
+  final MembershipPackageService membershipPackageService = MembershipPackageService();
 
   User? get user => _user;
   MembershipPackage? get membershipPackage => _membershipPackage;
@@ -21,7 +22,7 @@ class UserProvider with ChangeNotifier {
   }
 
   Future<void> fetchMembershipPackage(int membershipPackageId) async {
-    _membershipPackage = await fetchMembershipPackageById(membershipPackageId);
+    _membershipPackage = await membershipPackageService.fetchMembershipPackageById(membershipPackageId);
     notifyListeners();
   }
 

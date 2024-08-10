@@ -35,8 +35,7 @@ class _MainScreenState extends State<MainScreen> {
       print('Loaded JWT token: $jwtToken');
       final user = await authService.getUserFromJwt(jwtToken!);
       if (user != null) {
-        print('User loaded: ${user.id}');
-        final userData = await authService.getUserData(user.id, jwtToken!, user.role);
+        final userData = await authService.getUserData(user.jmbg, jwtToken!, user.role);
         if (userData != null) {
           User updatedUser;
           if (user.role == 'Client') {
@@ -90,7 +89,7 @@ class _MainScreenState extends State<MainScreen> {
         Navigator.pushReplacementNamed(context, 'trainings/');
         break;
       case 2:
-      //Navigator.pushReplacementNamed(context, '/reservations');
+        Navigator.pushReplacementNamed(context, 'reservations/');
         break;
       case 3:
         Navigator.pushReplacementNamed(context, 'profile/');

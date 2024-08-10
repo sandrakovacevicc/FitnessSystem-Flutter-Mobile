@@ -29,7 +29,7 @@ class _TrainingsState extends State<Trainings> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _setInitialDate();
     });
-    _fetchSessions(); // Fetch sessions when the screen loads
+    _fetchSessions();
   }
 
   void _generateDates() {
@@ -113,7 +113,7 @@ class _TrainingsState extends State<Trainings> {
         Navigator.pushReplacementNamed(context, 'trainings/');
         break;
       case 2:
-      // Navigator.pushReplacementNamed(context, '/reservations');
+        Navigator.pushReplacementNamed(context, 'reservations/');
         break;
       case 3:
         Navigator.pushReplacementNamed(context, 'profile/');
@@ -260,7 +260,7 @@ class _TrainingsState extends State<Trainings> {
                               } else if (snapshot.hasError) {
                                 return const Center(child: Text('Error loading sessions'));
                               } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                                return const Center(child: Text('No sessions available'));
+                                return const Center(child: Text('No sessions available', style: TextStyle(color: Color(0xFFE6FE58), fontWeight: FontWeight.bold, fontSize: 20 ),));
                               } else {
                                 return ListView.builder(
                                   itemCount: snapshot.data!.length,

@@ -1,5 +1,5 @@
 class User {
-  final String id;
+
   final String name;
   final String surname;
   final String email;
@@ -9,9 +9,9 @@ class User {
   final DateTime? birthdate;
   final String? mobileNumber;
   final String? specialty;
+  final String? password;
 
   User({
-    required this.id,
     required this.name,
     required this.surname,
     required this.email,
@@ -21,6 +21,7 @@ class User {
     this.birthdate,
     this.mobileNumber,
     this.specialty,
+    this.password,
   });
 
   User copyWith({
@@ -36,7 +37,6 @@ class User {
     String? specialty,
   }) {
     return User(
-      id: id ?? this.id,
       name: name ?? this.name,
       surname: surname ?? this.surname,
       email: email ?? this.email,
