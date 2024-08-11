@@ -213,7 +213,7 @@ class _MainScreenState extends State<MainScreen> {
                             _trainerAvatar('https://nationalpti.org/wp-content/uploads/2014/02/Personal-Trainer.jpg', 'Zika Zikic'),
                             _trainerAvatar('https://media.istockphoto.com/id/675179390/photo/muscular-trainer-writing-on-clipboard.jpg?s=612x612&w=0&k=20&c=9NKx1AwVMpPY0YBlk5H-hxx2vJSCu1Wc78BKRM9wFq0=', 'Pera Peric'),
                             _trainerAvatar('https://www.shutterstock.com/image-photo/portrait-female-personal-trainer-holding-260nw-2249557387.jpg', 'Sandra Kovacevic'),
-                            _trainerAvatar('https://www.shutterstock.com/image-photo/portrait-female-personal-trainer-holding-260nw-2249557387.jpg', 'Sandra Kovacevic'),
+                            _trainerAvatar('https://media.cnn.com/api/v1/images/stellar/prod/mary-wing-credit-future-research-inc.jpg?c=16x9&q=h_833,w_1480,c_fill', 'Dunja Nesic'),
                           ],
                         ),
                       ),

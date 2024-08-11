@@ -62,18 +62,21 @@ class _ReservationsState extends State<Reservations> {
             return const Center(child: Text('No reservations found.'));
           } else {
             final reservations = snapshot.data!;
-            return ListView.builder(
-              itemCount: reservations.length,
-              itemBuilder: (context, index) {
-                final reservation = reservations[index];
-                return ReservationCard(
-                  trainingProgramName: reservation.trainingProgramName,
-                  date: reservation.trainingDate,
-                  time: reservation.time,
-                  status: reservation.status, trainingDate: reservation.trainingDate,
-                  reservationDate: reservation.date, trainingTime: reservation.trainingTime,
-                );
-              },
+            return Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: ListView.builder(
+                itemCount: reservations.length,
+                itemBuilder: (context, index) {
+                  final reservation = reservations[index];
+                  return ReservationCard(
+                    trainingProgramName: reservation.trainingProgramName,
+                    time: reservation.time,
+                    status: reservation.status,
+                    reservationDate: reservation.date,
+                    trainingTime: reservation.trainingTime, trainingDate: reservation.trainingDate,
+                  );
+                },
+              ),
             );
           }
         },

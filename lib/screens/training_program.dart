@@ -30,11 +30,9 @@ class _SessionDetailPageState extends State<SessionDetailPage> {
     final currentDate = DateTime(now.year, now.month, now.day);
     final currentTime = TimeOfDay.now();
 
-
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final clientJMBG = userProvider.user?.jmbg ?? '';
 
-    // Check if the reservation date is in the future
     if (session.date.isAfter(currentDate)) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Reservation date cannot be in the future!')),
@@ -42,7 +40,6 @@ class _SessionDetailPageState extends State<SessionDetailPage> {
       return;
     }
 
-    // Check if the reservation time is in the future or after session time
     final sessionTime = session.time;
     final reservationTime = DateTime(0, 0, 0, currentTime.hour, currentTime.minute);
     if (reservationTime.isAfter(DateTime(0, 0, 0, sessionTime.hour, sessionTime.minute))) {
@@ -53,7 +50,6 @@ class _SessionDetailPageState extends State<SessionDetailPage> {
     }
 
     try {
-      // Ensure that clientJMBG is not empty
       if (clientJMBG.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('User JMBG is not available!')),
@@ -62,10 +58,10 @@ class _SessionDetailPageState extends State<SessionDetailPage> {
       }
 
       await _reservationService.createReservation(
-        clientJMBG: clientJMBG, // Use the JMBG from UserProvider
+        clientJMBG: clientJMBG,
         sessionId: session.sessionId,
-        date: currentDate, // Use the current date
-        time: DateFormat('HH:mm:ss').format(reservationTime), // Use the current time
+        date: currentDate,
+        time: DateFormat('HH:mm:ss').format(reservationTime),
         status: "reserved",
       );
 
@@ -73,7 +69,6 @@ class _SessionDetailPageState extends State<SessionDetailPage> {
         const SnackBar(content: Text('Reservation successfully created!')),
       );
     } catch (e, stackTrace) {
-      // Print or log the error and stack trace
       print('Failed to create reservation: $e');
       print('Stack trace: $stackTrace');
 
@@ -82,7 +77,6 @@ class _SessionDetailPageState extends State<SessionDetailPage> {
       );
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +92,8 @@ class _SessionDetailPageState extends State<SessionDetailPage> {
             return const Center(child: Text('Session not found'));
           } else {
             final session = snapshot.data!;
-            String imageUrl = getProgramImage(session.trainingProgramName);
+            String programImageUrl = getProgramImage(session.trainingProgramName);
+            String trainerImageUrl = getTrainerImage(session.trainerName);
             Icon levelIcon = getLevelIcon(session.trainingProgramType);
 
             return Column(
@@ -108,7 +103,7 @@ class _SessionDetailPageState extends State<SessionDetailPage> {
                     SizedBox(
                       height: 300,
                       child: Image.asset(
-                        imageUrl,
+                        programImageUrl,
                         width: double.infinity,
                         fit: BoxFit.cover,
                       ),
@@ -206,9 +201,9 @@ class _SessionDetailPageState extends State<SessionDetailPage> {
                           const SizedBox(height: 10),
                           Row(
                             children: [
-                              const CircleAvatar(
+                              CircleAvatar(
                                 radius: 30,
-                                backgroundImage: AssetImage('assets/hiit.jpg'),
+                                backgroundImage: AssetImage(trainerImageUrl),
                               ),
                               const SizedBox(width: 20),
                               Column(
@@ -292,19 +287,26 @@ class _SessionDetailPageState extends State<SessionDetailPage> {
       'Pilates': 'assets/pilates.jpg',
       'Crossfit': 'assets/crossfit.jpg',
       'Spinning': 'assets/spinning.jpg',
-    }[programName] ?? 'assets/default.jpg';
+    }[programName] ?? 'assets/default_program.jpg';
   }
 
-  Icon getLevelIcon(String level) {
-    switch (level) {
+  String getTrainerImage(String trainerName) {
+    return {
+      'Sandra': 'assets/sandra.jpg',
+      'Zika': 'assets/zika.jpg',
+    }[trainerName] ?? 'assets/trainers/default_trainer.jpg';
+  }
+
+  Icon getLevelIcon(String trainingType) {
+    switch (trainingType) {
       case 'beginner':
-        return const Icon(Icons.directions_walk, color: Colors.green);
+        return const Icon(Icons.star, color: Colors.green);
       case 'intermediate':
-        return const Icon(Icons.directions_run, color: Colors.orange);
+        return const Icon(Icons.star_half, color: Colors.orange);
       case 'advanced':
-        return const Icon(Icons.directions_bike, color: Colors.red);
+        return const Icon(Icons.star_outline, color: Colors.red);
       default:
-        return const Icon(Icons.help, color: Colors.grey);
+        return const Icon(Icons.star_border, color: Colors.grey);
     }
   }
 }

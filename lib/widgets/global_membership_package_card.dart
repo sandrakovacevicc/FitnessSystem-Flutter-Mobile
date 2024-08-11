@@ -9,10 +9,10 @@ class GlobalCard extends StatelessWidget {
 
   String getPackageImage(String packageName) {
     return {
-      'student paket': 'assets/hiit.jpg',
+      'student paket': 'assets/student.jpg',
       'regular paket': 'assets/package.jpg',
-      'polugodisnji paket': 'assets/hiit.jpg',
-      'godisnji paket': 'assets/hiit.jpg',
+      'polugodisnji paket': 'assets/polugodisnji.jpg',
+      'godisnji paket': 'assets/godisnji.jpg',
     }[packageName.toLowerCase()] ?? 'assets/default.jpg';
   }
 
@@ -112,7 +112,7 @@ class GlobalCard extends StatelessWidget {
                         borderRadius: BorderRadius.circular(15.0),
                       ),
                       child: const Text(
-                        'Book Now',
+                        'Choose this one',
                         style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,

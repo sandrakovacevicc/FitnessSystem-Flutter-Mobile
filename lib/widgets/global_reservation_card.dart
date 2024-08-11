@@ -16,32 +16,32 @@ class ReservationCard extends StatelessWidget {
     required this.trainingTime,
     required this.reservationDate,
     required this.time,
-    required this.status, required DateTime date,
+    required this.status,
   });
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-      elevation: 12,
+      margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8), // Reduced margins
+      elevation: 6, // Reduced elevation
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(8), // Reduced border radius
       ),
-      color: Colors.black.withOpacity(0.9),
+      color: Colors.black.withOpacity(0.8), // Slightly reduced opacity
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(8),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.5),
-              spreadRadius: 4,
-              blurRadius: 10,
-              offset: const Offset(0, 4), // changes position of shadow
+              color: Colors.black.withOpacity(0.3), // Adjusted shadow opacity
+              spreadRadius: 1, // Reduced spread radius
+              blurRadius: 4, // Reduced blur radius
+              offset: const Offset(0, 2), // Adjusted shadow offset
             ),
           ],
         ),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(12), // Reduced padding
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -49,29 +49,29 @@ class ReservationCard extends StatelessWidget {
               Text(
                 trainingProgramName,
                 style: const TextStyle(
-                  fontSize: 24,
+                  fontSize: 18, // Reduced font size
                   fontWeight: FontWeight.bold,
                   color: Color(0xFFE6FE58),
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 8), // Reduced spacing
 
               // Training Date and Time
               Text(
-                '${DateFormat('d MMM yyyy').format(trainingDate)} - ${trainingTime}',
+                '${DateFormat('d MMM yyyy').format(trainingDate)} - $trainingTime',
                 style: const TextStyle(
-                  fontSize: 18,
+                  fontSize: 14, // Reduced font size
                   color: Colors.white,
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 8), // Reduced spacing
 
               // Reservation Details
               Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(8), // Reduced padding
                 decoration: BoxDecoration(
                   color: const Color(0xFFE6FE58),
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(8), // Reduced border radius
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -79,12 +79,12 @@ class ReservationCard extends StatelessWidget {
                     const Text(
                       'Reservation Details',
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 16, // Reduced font size
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 6), // Reduced spacing
                     _buildInfoRow(
                       label: 'Reservation Date:',
                       value: DateFormat('d MMM yyyy').format(reservationDate),
@@ -93,11 +93,11 @@ class ReservationCard extends StatelessWidget {
                       label: 'Reservation Time:',
                       value: time,
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 6), // Reduced spacing
                     Text(
                       'Status: $status',
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 14, // Reduced font size
                         fontWeight: FontWeight.bold,
                         color: status == 'reserved' ? Colors.green : Colors.redAccent,
                       ),
@@ -119,7 +119,7 @@ class ReservationCard extends StatelessWidget {
           child: Text(
             label,
             style: const TextStyle(
-              fontSize: 16,
+              fontSize: 14, // Reduced font size
               color: Colors.black54,
               fontWeight: FontWeight.w500,
             ),
@@ -130,7 +130,7 @@ class ReservationCard extends StatelessWidget {
             value,
             textAlign: TextAlign.end,
             style: const TextStyle(
-              fontSize: 16,
+              fontSize: 14, // Reduced font size
               color: Colors.black,
             ),
           ),

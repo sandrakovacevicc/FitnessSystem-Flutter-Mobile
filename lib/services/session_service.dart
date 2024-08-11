@@ -12,9 +12,9 @@ class SessionService {
 
     final response = await http.get(Uri.parse(url));
 
-    print('Request URL: $url'); // Dodajte ovo za debagovanje
-    print('Response status: ${response.statusCode}'); // Dodajte ovo za debagovanje
-    print('Response body: ${response.body}'); // Dodajte ovo za debagovanje
+    print('Request URL: $url');
+    print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
 
     if (response.statusCode == 200) {
       List<dynamic> body = jsonDecode(response.body);
