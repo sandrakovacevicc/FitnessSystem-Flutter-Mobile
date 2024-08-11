@@ -134,13 +134,14 @@ class AuthService {
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
         'email': user.email,
-        'password': 'your_password_here',
+        'password': user.password,
         'name': user.name,
         'surname': user.surname,
-        'phoneNumber': user.mobileNumber,
+        'mobileNumber': user.mobileNumber,
         'jmbg': user.jmbg,
         'birthdate': user.birthdate?.toIso8601String(),
         'membershipPackageId': user.membershipPackageId,
+        'roles': [user.role.isNotEmpty ? user.role : 'Client'],
       }),
     );
 
@@ -152,5 +153,19 @@ class AuthService {
     }
   }
 
-}
+  Future<bool> getClientsById(String jmbg) async {
+    final url = Uri.parse('https://10.0.2.2:7083/api/clients/$jmbg');
+    final response = await http.get(url);
 
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+
+      return data.isNotEmpty;
+    } else {
+      print('Error checking client existence: ${response.body}');
+      return false;
+    }
+  }
+
+
+}

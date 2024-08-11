@@ -11,8 +11,8 @@ class GlobalCard extends StatelessWidget {
     return {
       'student paket': 'assets/hiit.jpg',
       'regular paket': 'assets/package.jpg',
-      'polugodisnji paket': 'assets/polugodisnji_packet.jpg',
-      'godisnji paket': 'assets/godisnji_packet.jpg',
+      'polugodisnji paket': 'assets/hiit.jpg',
+      'godisnji paket': 'assets/hiit.jpg',
     }[packageName.toLowerCase()] ?? 'assets/default.jpg';
   }
 

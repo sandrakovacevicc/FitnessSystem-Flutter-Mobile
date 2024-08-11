@@ -27,34 +27,40 @@ class _MembershipPackagesState extends State<MembershipPackages> {
     futureMembershipPackages = MembershipPackageService().fetchMembershipPackages();
   }
 
+
+
   Future<void> _createAccount() async {
     if (selectedIndex == null) {
-      // Show an error message if no package is selected
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please select a membership package.')),
       );
       return;
     }
 
-    // Get the selected package ID
     final selectedPackageId = (await futureMembershipPackages)[selectedIndex!].membershipPackageId;
-
-    // Update the User object with the selected membership package ID
     User updatedUser = widget.user.copyWith(membershipPackageId: selectedPackageId);
 
-    // Call the sign-up method with the updated user data
-    final signUpResponse = await _authService.signUp(updatedUser);
+    final clientExists = await _authService.getClientsById(updatedUser.jmbg);
+    if (clientExists) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('A client with this JMBG already exists.')),
+      );
+      return;
+    }
 
-    if (signUpResponse != null) {
-      // Navigate to the main screen on successful sign-up
-      Navigator.pushNamed(context, 'mainScreen/');
+    final signUpResponse = await _authService.signUp(updatedUser);
+    if (signUpResponse) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Successfully created account!')),
+      );
+      Navigator.pushNamed(context, 'login/');
     } else {
-      // Show an error message on sign-up failure
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Failed to create an account.')),
       );
     }
   }
+
 
   @override
   Widget build(BuildContext context) {

@@ -30,38 +30,38 @@ void main() {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         initialRoute: 'home/',
-        onGenerateRoute: (settings) {
-          switch (settings.name) {
-            case 'membershipPackages/':
-              final args = settings.arguments as User;
-              return MaterialPageRoute(
-                builder: (context) => MembershipPackages(user: args),
-              );
-            default:
-              return MaterialPageRoute(
-                builder: (context) {
-                  switch (settings.name) {
-                    case 'home/':
-                      return const Home();
-                    case 'login/':
-                      return const Login();
-                    case 'signIn/':
-                      return const SignIn();
-                    case 'mainScreen/':
-                      return const MainScreen();
-                    case 'profile/':
-                      return const Profile();
-                    case 'trainings/':
-                      return const Trainings();
-                    case 'reservations/':
-                      return const Reservations();
-                    default:
-                      return const Home(); // Default route
-                  }
-                },
-              );
+          onGenerateRoute: (settings) {
+            switch (settings.name) {
+              case 'membershipPackages/':
+                final args = settings.arguments as User;
+                return MaterialPageRoute(
+                  builder: (context) => MembershipPackages(user: args),
+                );
+              default:
+                return MaterialPageRoute(
+                  builder: (context) {
+                    switch (settings.name) {
+                      case 'home/':
+                        return const Home();
+                      case 'login/':
+                        return const Login();
+                      case 'signIn/':
+                        return const SignIn();
+                      case 'mainScreen/':
+                        return const MainScreen();
+                      case 'profile/':
+                        return const Profile();
+                      case 'trainings/':
+                        return const Trainings();
+                      case 'reservations/':
+                        return const Reservations();
+                      default:
+                        return const Home(); // Default route
+                    }
+                  },
+                );
+            }
           }
-        },
       ),
     ),
   );

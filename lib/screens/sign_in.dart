@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fytness_system/utils/global_colors.dart';
 import 'package:fytness_system/widgets/global_button.dart';
 import 'package:fytness_system/widgets/global_text_form.dart';
+import 'package:fytness_system/models/user.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
@@ -23,15 +24,16 @@ class _SignInState extends State<SignIn> {
 
   void _submit() {
     if (_formKey.currentState?.validate() ?? false) {
-      final userData = {
-        'name': nameController.text,
-        'surname': surnameController.text,
-        'jmbg': jmbgController.text,
-        'email': emailController.text,
-        'phone': phoneController.text,
-        'birthday': birthdayController.text,
-        'password': passwordController.text,
-      };
+      final User userData = User(
+        name: nameController.text,
+        surname: surnameController.text,
+        email: emailController.text,
+        jmbg: jmbgController.text,
+        role: 'Client',
+        birthdate: DateTime.tryParse(birthdayController.text),
+        mobileNumber: phoneController.text,
+        password: passwordController.text,
+      );
 
       Navigator.pushNamed(context, 'membershipPackages/', arguments: userData);
     }
@@ -91,6 +93,7 @@ class _SignInState extends State<SignIn> {
             width: double.infinity,
             padding: const EdgeInsets.fromLTRB(20, 25, 20, 20),
             child: Form(
+              key: _formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -213,9 +216,7 @@ class _SignInState extends State<SignIn> {
                   Center(
                     child: GlobalButton(
                       text: 'Choose your membership package',
-                      onPressed: () {
-                        _submit();
-                      },
+                      onPressed: _submit,
                       backgroundColor: const Color(0xFFE6FE58),
                       textColor: const Color(0xFF050505),
                       width: double.infinity,
@@ -255,5 +256,4 @@ class _SignInState extends State<SignIn> {
       ),
     );
   }
-
 }

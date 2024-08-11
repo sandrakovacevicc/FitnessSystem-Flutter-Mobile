@@ -229,8 +229,8 @@ class _LoginState extends State<Login> {
                   children: [
                     Expanded(
                       child: Container(
-                       alignment: Alignment.center,
-                       child: Image.asset('assets/google.png'),
+                        alignment: Alignment.center,
+                        child: Image.asset('assets/google.png'),
                       ),
                     ),
                     Expanded(
@@ -251,14 +251,14 @@ class _LoginState extends State<Login> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                       const Text(
-                        "Don't have an account ?",
-                        style: TextStyle(
-                          color: Color(0xFFFEF9F1),
-                          fontSize: 15,
-                          fontWeight: FontWeight.normal,
-                        ),
+                    const Text(
+                      "Don't have an account ?",
+                      style: TextStyle(
+                        color: Color(0xFFFEF9F1),
+                        fontSize: 15,
+                        fontWeight: FontWeight.normal,
                       ),
+                    ),
                     GestureDetector(
                       onTap: () {
                         Navigator.pushNamed(context, 'signIn/');

@@ -35,6 +35,7 @@ class User {
     DateTime? birthdate,
     String? mobileNumber,
     String? specialty,
+    String? password,
   }) {
     return User(
       name: name ?? this.name,
@@ -46,6 +47,7 @@ class User {
       birthdate: birthdate ?? this.birthdate,
       mobileNumber: mobileNumber ?? this.mobileNumber,
       specialty: specialty ?? this.specialty,
+      password: password?? this.password,
     );
   }
 }
