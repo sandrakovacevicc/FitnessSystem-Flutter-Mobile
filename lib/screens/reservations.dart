@@ -4,6 +4,7 @@ import 'package:fytness_system/services/reservation_service.dart';
 import 'package:fytness_system/services/session_service.dart';
 import 'package:fytness_system/models/reservation.dart';
 import 'package:fytness_system/models/session.dart';
+import 'package:fytness_system/widgets/global_admin_card.dart';
 import 'package:fytness_system/widgets/global_menu.dart';
 import 'package:fytness_system/widgets/global_navbar.dart';
 import 'package:fytness_system/widgets/global_reservation_card.dart';
@@ -18,7 +19,6 @@ class Reservations extends StatefulWidget {
 }
 
 class _ReservationsState extends State<Reservations> {
-  late Future<List<dynamic>> _data;
   int selectedIndex = 2;
   final ReservationService _reservationService =
   ReservationService(baseUrl: 'https://10.0.2.2:7083/api');
@@ -30,18 +30,13 @@ class _ReservationsState extends State<Reservations> {
     super.initState();
     final user = Provider.of<UserProvider>(context, listen: false).user;
     if (user != null) {
-      final userJMBG = user.jmbg;
       final userRole = user.role;
 
       if (userRole == 'Client') {
-        _data = _reservationService.fetchReservationsByUserId(userJMBG);
       } else if (userRole == 'Trainer') {
-        _data = _sessionService.fetchSessionsByTrainerJmbg(userJMBG);
       } else {
-        _data = Future.value([]);
       }
     } else {
-      _data = Future.value([]);
     }
   }
 
@@ -50,8 +45,6 @@ class _ReservationsState extends State<Reservations> {
       await _reservationService.deleteReservation(reservationId);
 
       setState(() {
-        _data = _reservationService.fetchReservationsByUserId(
-            Provider.of<UserProvider>(context, listen: false).user?.jmbg ?? '');
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -91,63 +84,144 @@ class _ReservationsState extends State<Reservations> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const NavBar(automaticallyImplyLeading: false),
-      body: FutureBuilder<List<dynamic>>(
-        future: _data,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('No data found.'));
-          } else {
-            final data = snapshot.data!;
-            if (data.isEmpty) {
-              return const Center(child: Text('No data available.'));
-            }
+      body: Consumer<UserProvider>(
+        builder: (context, userProvider, child) {
+          final userRole = userProvider.user?.role;
 
-            if (data.first is Reservation) {
-              return Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: ListView.builder(
-                  itemCount: data.length,
-                  itemBuilder: (context, index) {
-                    final reservation = data[index] as Reservation;
-                    return ReservationCard(
-                      trainingProgramName: reservation.trainingProgramName,
-                      time: reservation.time,
-                      status: reservation.status,
-                      reservationDate: reservation.date,
-                      trainingTime: reservation.trainingTime,
-                      trainingDate: reservation.trainingDate,
-                      reservationId: reservation.reservationId,
-                      onDelete: () => _deleteReservation(reservation.reservationId),
-                    );
-                  },
+          if (userRole == 'Client') {
+            return FutureBuilder<List<dynamic>>(
+              future: _reservationService.fetchReservationsByUserId(userProvider.user?.jmbg ?? ''),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const Center(child: Text('No data found.'));
+                } else {
+                  final data = snapshot.data!;
+                  return Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: ListView.builder(
+                      itemCount: data.length,
+                      itemBuilder: (context, index) {
+                        final reservation = data[index] as Reservation;
+                        return ReservationCard(
+                          trainingProgramName: reservation.trainingProgramName,
+                          time: reservation.time,
+                          status: reservation.status,
+                          reservationDate: reservation.date,
+                          trainingTime: reservation.trainingTime,
+                          trainingDate: reservation.trainingDate,
+                          reservationId: reservation.reservationId,
+                          onDelete: () => _deleteReservation(reservation.reservationId),
+                        );
+                      },
+                    ),
+                  );
+                }
+              },
+            );
+          } else if (userRole == 'Trainer') {
+            return FutureBuilder<List<dynamic>>(
+              future: _sessionService.fetchSessionsByTrainerJmbg(userProvider.user?.jmbg ?? ''),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const Center(child: Text('No data found.'));
+                } else {
+                  final data = snapshot.data!;
+                  return Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: ListView.builder(
+                      itemCount: data.length,
+                      itemBuilder: (context, index) {
+                        final session = data[index] as Session;
+                        return TrainerSessionCard(
+                          trainingProgramName: session.trainingProgramName,
+                          trainingTime: session.time,
+                          trainerName: '${session.trainerName} ${session.trainerSurname}',
+                          trainingDate: session.date,
+                          capacity: session.capacity,
+                          roomName: session.roomName,
+                        );
+                      },
+                    ),
+                  );
+                }
+              },
+            );
+          } else if (userRole == 'Admin') {
+            final List<String> titles = [
+              'Clients',
+              'Trainers',
+              'Training Programs',
+              'Membership Packages',
+              'Sessions',
+              'Rooms',
+            ];
+
+            final List<String> imagePaths = [
+              'assets/clients.jpg',
+              'assets/trainers.jpg',
+              'assets/training_programs.jpg',
+              'assets/membership_packages.jpg',
+              'assets/sessions.jpg',
+              'assets/rooms.jpg',
+            ];
+
+            return Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Center(
+                child: SizedBox(
+                  width: 400,
+                  child: GridView.builder(
+                    shrinkWrap: true,
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 16.0,
+                      mainAxisSpacing: 16.0,
+                      childAspectRatio: 1.0,
+                    ),
+                    itemCount: titles.length,
+                    itemBuilder: (context, index) {
+                      return GlobalGridItem(
+                        title: titles[index],
+                        imagePath: imagePaths[index],
+                        onTap: () {
+                          print('Tapped on index $index: ${titles[index]}');
+                          switch (index) {
+                            case 0:
+                              Navigator.pushNamed(context, 'clients/');
+                              break;
+                            case 1:
+                              Navigator.pushNamed(context, 'trainers/');
+                              break;
+                            case 2:
+                              Navigator.pushNamed(context, 'training_programs/');
+                              break;
+                            case 3:
+                              Navigator.pushNamed(context, 'membership_packages/');
+                              break;
+                            case 4:
+                              Navigator.pushNamed(context, 'sessions/');
+                              break;
+                            case 5:
+                              Navigator.pushNamed(context, 'rooms/');
+                              break;
+                          }
+                        },
+                      );
+                    },
+                  ),
                 ),
-              );
-            } else if (data.first is Session) {
-              return Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: ListView.builder(
-                  itemCount: data.length,
-                  itemBuilder: (context, index) {
-                    final session = data[index] as Session;
-                    return TrainerSessionCard(
-                      trainingProgramName: session.trainingProgramName,
-                      trainingTime: session.time,
-                      trainerName:
-                      '${session.trainerName} ${session.trainerSurname}',
-                      trainingDate: session.date,
-                      capacity: session.capacity,
-                      roomName: session.roomName,
-                    );
-                  },
-                ),
-              );
-            } else {
-              return const Center(child: Text('Unexpected data type.'));
-            }
+              ),
+            );
+          } else {
+            return const Center(child: Text('Unexpected data type.'));
           }
         },
       ),
@@ -157,4 +231,6 @@ class _ReservationsState extends State<Reservations> {
       ),
     );
   }
+
+
 }

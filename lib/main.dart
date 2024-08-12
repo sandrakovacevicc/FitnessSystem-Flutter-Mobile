@@ -1,12 +1,18 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fytness_system/screens/LogIn.dart';
+import 'package:fytness_system/screens/clients.dart';
 import 'package:fytness_system/screens/home.dart';
 import 'package:fytness_system/screens/main_screen.dart';
 import 'package:fytness_system/screens/membership_packages.dart';
+import 'package:fytness_system/screens/packages.dart';
 import 'package:fytness_system/screens/profile.dart';
 import 'package:fytness_system/screens/reservations.dart';
+import 'package:fytness_system/screens/rooms.dart';
+import 'package:fytness_system/screens/sessions.dart';
 import 'package:fytness_system/screens/sign_in.dart';
+import 'package:fytness_system/screens/trainers.dart';
+import 'package:fytness_system/screens/training_programs.dart';
 import 'package:fytness_system/screens/trainings.dart';
 import 'package:provider/provider.dart';
 import 'package:fytness_system/providers/user_provider.dart';
@@ -55,6 +61,18 @@ void main() {
                         return const Trainings();
                       case 'reservations/':
                         return const Reservations();
+                      case 'clients/':
+                        return const Clients();
+                      case 'trainers/':
+                        return const Trainers();
+                      case 'training_programs/':
+                        return const TrainingPrograms();
+                      case 'sessions/':
+                        return const Sessions();
+                      case 'rooms/':
+                        return const Rooms();
+                      case 'membership_packages/':
+                        return const Packages();
                       default:
                         return const Home(); // Default route
                     }

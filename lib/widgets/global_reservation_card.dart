@@ -143,7 +143,7 @@ class ReservationCard extends StatelessWidget {
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                             color: status == 'reserved'
-                                ? Colors.green
+                                ? Colors.green[900]
                                 : Colors.redAccent,
                           ),
                         ),
