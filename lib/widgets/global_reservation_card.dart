@@ -22,82 +22,118 @@ class ReservationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8), // Reduced margins
-      elevation: 6, // Reduced elevation
+      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+      elevation: 8,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8), // Reduced border radius
+        borderRadius: BorderRadius.circular(12),
       ),
-      color: Colors.black.withOpacity(0.8), // Slightly reduced opacity
+      color: Colors.black.withOpacity(0.9),
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.3), // Adjusted shadow opacity
-              spreadRadius: 1, // Reduced spread radius
-              blurRadius: 4, // Reduced blur radius
-              offset: const Offset(0, 2), // Adjusted shadow offset
+              color: Colors.black.withOpacity(0.5),
+              spreadRadius: 1,
+              blurRadius: 8,
+              offset: const Offset(0, 4),
             ),
           ],
         ),
         child: Padding(
-          padding: const EdgeInsets.all(12), // Reduced padding
+          padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Training Program Name
-              Text(
-                trainingProgramName,
-                style: const TextStyle(
-                  fontSize: 18, // Reduced font size
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFFE6FE58),
-                ),
+              // Training Program Name with Icon
+              Row(
+                children: [
+                  Icon(
+                    Icons.fitness_center,
+                    color: Color(0xFFE6FE58),
+                    size: 24,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      trainingProgramName,
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFFE6FE58),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(height: 8), // Reduced spacing
+              const SizedBox(height: 12),
 
-              // Training Date and Time
-              Text(
-                '${DateFormat('d MMM yyyy').format(trainingDate)} - $trainingTime',
-                style: const TextStyle(
-                  fontSize: 14, // Reduced font size
-                  color: Colors.white,
-                ),
+              // Training Date and Time with Icon
+              Row(
+                children: [
+                  Icon(
+                    Icons.calendar_today,
+                    color: Colors.white,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      '${DateFormat('d MMM yyyy').format(trainingDate)} - $trainingTime',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(height: 8), // Reduced spacing
+              const SizedBox(height: 8),
 
-              // Reservation Details
+              // Reservation Details with Icons
               Container(
-                padding: const EdgeInsets.all(8), // Reduced padding
+                padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
                   color: const Color(0xFFE6FE58),
-                  borderRadius: BorderRadius.circular(8), // Reduced border radius
+                  borderRadius: BorderRadius.circular(12),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Reservation Details',
-                      style: TextStyle(
-                        fontSize: 16, // Reduced font size
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.schedule,
+                          color: Colors.black,
+                          size: 20,
+                        ),
+                        const SizedBox(width: 8),
+                        const Text(
+                          'Reservation Details',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 6), // Reduced spacing
+                    const SizedBox(height: 8),
                     _buildInfoRow(
+                      icon: Icons.calendar_today,
                       label: 'Reservation Date:',
                       value: DateFormat('d MMM yyyy').format(reservationDate),
                     ),
                     _buildInfoRow(
+                      icon: Icons.access_time,
                       label: 'Reservation Time:',
                       value: time,
                     ),
-                    const SizedBox(height: 6), // Reduced spacing
+                    const SizedBox(height: 8),
                     Text(
                       'Status: $status',
                       style: TextStyle(
-                        fontSize: 14, // Reduced font size
+                        fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: status == 'reserved' ? Colors.green : Colors.redAccent,
                       ),
@@ -112,14 +148,20 @@ class ReservationCard extends StatelessWidget {
     );
   }
 
-  Widget _buildInfoRow({required String label, required String value}) {
+  Widget _buildInfoRow({required IconData icon, required String label, required String value}) {
     return Row(
       children: [
+        Icon(
+          icon,
+          color: Colors.black54,
+          size: 20,
+        ),
+        const SizedBox(width: 8),
         Expanded(
           child: Text(
             label,
             style: const TextStyle(
-              fontSize: 14, // Reduced font size
+              fontSize: 14,
               color: Colors.black54,
               fontWeight: FontWeight.w500,
             ),
@@ -130,7 +172,7 @@ class ReservationCard extends StatelessWidget {
             value,
             textAlign: TextAlign.end,
             style: const TextStyle(
-              fontSize: 14, // Reduced font size
+              fontSize: 14,
               color: Colors.black,
             ),
           ),

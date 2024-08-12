@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fytness_system/screens/LogIn.dart';
-import 'package:fytness_system/screens/sign_in.dart';
 import 'package:fytness_system/widgets/global_button.dart';
 
 class Home extends StatefulWidget {

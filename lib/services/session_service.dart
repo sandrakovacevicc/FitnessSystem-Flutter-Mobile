@@ -34,4 +34,20 @@ class SessionService {
     }
   }
 
+  Future<List<Session>> fetchSessionsByTrainerJmbg(String trainerJMBG) async {
+    final String url = '$baseUrl/trainers/$trainerJMBG';
+
+    final response = await http.get(Uri.parse(url));
+
+    print('Request URL: $url');
+    print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
+
+    if (response.statusCode == 200) {
+      List<dynamic> body = jsonDecode(response.body);
+      return body.map((json) => Session.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to load sessions for trainer');
+    }
+  }
 }

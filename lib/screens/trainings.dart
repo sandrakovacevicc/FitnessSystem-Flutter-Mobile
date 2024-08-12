@@ -52,7 +52,7 @@ class _TrainingsState extends State<Trainings> {
     }
 
     setState(() {
-      selectedIndex = this.selectedIndex;
+      selectedIndex = selectedIndex;
     });
 
     double totalWidth = MediaQuery.of(context).size.width;
@@ -147,7 +147,7 @@ class _TrainingsState extends State<Trainings> {
                             Expanded(
                               child: Padding(
                                 padding: const EdgeInsets.all(5.0),
-                                child: Container(
+                                child: SizedBox(
                                   height: 48,
                                   child: TextField(
                                     controller: searchController,

@@ -12,7 +12,9 @@ class SessionDetailPage extends StatefulWidget {
   const SessionDetailPage({super.key, required this.sessionId});
 
   @override
-  _SessionDetailPageState createState() => _SessionDetailPageState();
+  _SessionDetailPageState createState() {
+    return _SessionDetailPageState();
+  }
 }
 
 class _SessionDetailPageState extends State<SessionDetailPage> {
@@ -25,6 +27,13 @@ class _SessionDetailPageState extends State<SessionDetailPage> {
     _session = SessionService(baseUrl: 'https://10.0.2.2:7083/api').fetchSessionById(widget.sessionId);
   }
 
+  void _generateQRCode(Session session) {
+    // Logic for generating QR code
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('QR Code generation not implemented!')),
+    );
+  }
+
   void _bookNow(Session session) async {
     final now = DateTime.now();
     final currentDate = DateTime(now.year, now.month, now.day);
@@ -33,35 +42,33 @@ class _SessionDetailPageState extends State<SessionDetailPage> {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final clientJMBG = userProvider.user?.jmbg ?? '';
 
-    if (session.date.isAfter(currentDate)) {
+    if (currentDate.isAfter(session.date)) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Reservation date cannot be in the future!')),
+        const SnackBar(content: Text('Reservation date cannot be in the past!')),
       );
       return;
     }
 
-    final sessionTime = session.time;
-    final reservationTime = DateTime(0, 0, 0, currentTime.hour, currentTime.minute);
-    if (reservationTime.isAfter(DateTime(0, 0, 0, sessionTime.hour, sessionTime.minute))) {
+    if (currentDate.isAfter(session.date) || (currentDate.isAtSameMomentAs(session.date) && currentTime.hour * 60 + currentTime.minute > session.time.hour * 60 + session.time.minute)) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Reservation time cannot be after the session time!')),
       );
       return;
     }
 
-    try {
-      if (clientJMBG.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('User JMBG is not available!')),
-        );
-        return;
-      }
+    if (clientJMBG.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('User JMBG is not available!')),
+      );
+      return;
+    }
 
+    try {
       await _reservationService.createReservation(
         clientJMBG: clientJMBG,
         sessionId: session.sessionId,
         date: currentDate,
-        time: DateFormat('HH:mm:ss').format(reservationTime),
+        time: DateFormat('HH:mm:ss').format(DateTime(0, 0, 0, currentTime.hour, currentTime.minute)),
         status: "reserved",
       );
 
@@ -95,6 +102,7 @@ class _SessionDetailPageState extends State<SessionDetailPage> {
             String programImageUrl = getProgramImage(session.trainingProgramName);
             String trainerImageUrl = getTrainerImage(session.trainerName);
             Icon levelIcon = getLevelIcon(session.trainingProgramType);
+            final userRole = Provider.of<UserProvider>(context).user?.role ?? '';
 
             return Column(
               children: [
@@ -181,6 +189,14 @@ class _SessionDetailPageState extends State<SessionDetailPage> {
                               color: Colors.grey,
                             ),
                           ),
+                          const SizedBox(height: 8),
+                          Text(
+                            'Room: ${session.roomName}',
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.grey,
+                            ),
+                          ),
                           const SizedBox(height: 20),
                           Text(
                             session.trainingProgramDescription,
@@ -244,34 +260,54 @@ class _SessionDetailPageState extends State<SessionDetailPage> {
                     ),
                   ),
                 ),
-                Container(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  color: Colors.black,
-                  child: Center(
-                    child: ElevatedButton(
-                      onPressed: session.capacity > 0 ? () {
-                        _bookNow(session);
-                      } : null,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: session.capacity > 0 ? const Color(0xFFE6FE58) : Colors.grey,
-                        foregroundColor: session.capacity > 0 ? Colors.black : Colors.white,
-                        disabledBackgroundColor: Colors.grey.withOpacity(0.3),
-                        disabledForegroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
+                if (userRole == 'Trainer')
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    color: Colors.black,
+                    child: Center(
+                      child: ElevatedButton(
+                        onPressed: () => _generateQRCode(session),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFFE6FE58),
+                          foregroundColor: Colors.black,
+                          padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          textStyle: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                        textStyle: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      child: Text(
-                        session.capacity > 0 ? 'Book Now' : 'No more available spots',
+                        child: const Text('Generate QR Code'),
                       ),
                     ),
                   ),
-                ),
+                if (userRole == 'Client' && session.capacity > 0)
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    color: Colors.black,
+                    child: Center(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          _bookNow(session);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFFE6FE58),
+                          foregroundColor: Colors.black,
+                          padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          textStyle: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        child: const Text('Book Now'),
+                      ),
+                    ),
+                  ),
               ],
             );
           }
@@ -293,20 +329,18 @@ class _SessionDetailPageState extends State<SessionDetailPage> {
   String getTrainerImage(String trainerName) {
     return {
       'Sandra': 'assets/sandra.jpg',
+      'Nikola': 'assets/nikola.jpg',
+      'Milica': 'assets/milica.jpg',
       'Zika': 'assets/zika.jpg',
-    }[trainerName] ?? 'assets/trainers/default_trainer.jpg';
+      'Marko': 'assets/marko.jpg',
+    }[trainerName] ?? 'assets/default_trainer.jpg';
   }
 
-  Icon getLevelIcon(String trainingType) {
-    switch (trainingType) {
-      case 'beginner':
-        return const Icon(Icons.star, color: Colors.green);
-      case 'intermediate':
-        return const Icon(Icons.star_half, color: Colors.orange);
-      case 'advanced':
-        return const Icon(Icons.star_outline, color: Colors.red);
-      default:
-        return const Icon(Icons.star_border, color: Colors.grey);
-    }
+  Icon getLevelIcon(String trainingProgramType) {
+    return {
+      'Beginner': const Icon(Icons.trending_up, color: Colors.green),
+      'Intermediate': const Icon(Icons.trending_flat, color: Colors.orange),
+      'Advanced': const Icon(Icons.trending_down, color: Colors.red),
+    }[trainingProgramType] ?? const Icon(Icons.help, color: Colors.grey);
   }
 }

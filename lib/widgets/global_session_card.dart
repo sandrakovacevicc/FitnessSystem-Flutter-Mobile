@@ -82,7 +82,6 @@ class SessionCard extends StatelessWidget {
                 ],
               ),
             ),
-            // "Book" button and availability information
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
