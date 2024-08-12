@@ -10,7 +10,6 @@ import 'package:fytness_system/widgets/global_reservation_card.dart';
 import 'package:fytness_system/widgets/global_trainer_session_card.dart';
 import 'package:provider/provider.dart';
 
-
 class Reservations extends StatefulWidget {
   const Reservations({super.key});
 
@@ -21,8 +20,10 @@ class Reservations extends StatefulWidget {
 class _ReservationsState extends State<Reservations> {
   late Future<List<dynamic>> _data;
   int selectedIndex = 2;
-  final ReservationService _reservationService = ReservationService(baseUrl: 'https://10.0.2.2:7083/api');
-  final SessionService _sessionService = SessionService(baseUrl: 'https://10.0.2.2:7083/api/sessions');
+  final ReservationService _reservationService =
+  ReservationService(baseUrl: 'https://10.0.2.2:7083/api');
+  final SessionService _sessionService =
+  SessionService(baseUrl: 'https://10.0.2.2:7083/api/sessions');
 
   @override
   void initState() {
@@ -37,10 +38,31 @@ class _ReservationsState extends State<Reservations> {
       } else if (userRole == 'Trainer') {
         _data = _sessionService.fetchSessionsByTrainerJmbg(userJMBG);
       } else {
-        _data = Future.value([]); // Empty list for roles without specific data
+        _data = Future.value([]);
       }
     } else {
-      _data = Future.value([]); // Empty list if no user is found
+      _data = Future.value([]);
+    }
+  }
+
+  void _deleteReservation(int reservationId) async {
+    try {
+      await _reservationService.deleteReservation(reservationId);
+
+      setState(() {
+        _data = _reservationService.fetchReservationsByUserId(
+            Provider.of<UserProvider>(context, listen: false).user?.jmbg ?? '');
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Reservation successfully deleted'),
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to delete reservation: $e')),
+      );
     }
   }
 
@@ -84,7 +106,6 @@ class _ReservationsState extends State<Reservations> {
               return const Center(child: Text('No data available.'));
             }
 
-            // Determine if the data is a list of reservations or sessions
             if (data.first is Reservation) {
               return Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -99,6 +120,8 @@ class _ReservationsState extends State<Reservations> {
                       reservationDate: reservation.date,
                       trainingTime: reservation.trainingTime,
                       trainingDate: reservation.trainingDate,
+                      reservationId: reservation.reservationId,
+                      onDelete: () => _deleteReservation(reservation.reservationId),
                     );
                   },
                 ),
@@ -113,9 +136,11 @@ class _ReservationsState extends State<Reservations> {
                     return TrainerSessionCard(
                       trainingProgramName: session.trainingProgramName,
                       trainingTime: session.time,
-                      trainerName: '${session.trainerName} ${session.trainerSurname}', trainingDate: session.date, capacity: session.capacity,
+                      trainerName:
+                      '${session.trainerName} ${session.trainerSurname}',
+                      trainingDate: session.date,
+                      capacity: session.capacity,
                       roomName: session.roomName,
-                      // You can add other session details here
                     );
                   },
                 ),

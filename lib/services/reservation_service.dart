@@ -65,4 +65,22 @@ class ReservationService {
       throw Exception('Failed to load reservations');
     }
   }
+
+  Future<void> deleteReservation(int reservationId) async {
+    final url = Uri.parse('$baseUrl/reservations/$reservationId');
+
+    try {
+      final response = await http.delete(url);
+
+      if (response.statusCode == 200) {
+        print('Reservation deleted successfully');
+      } else {
+        print('Failed to delete reservation: ${response.statusCode} ${response.body}');
+        throw Exception('Failed to delete reservation');
+      }
+    } catch (e) {
+      print('Exception caught: $e');
+      throw Exception('Failed to delete reservation');
+    }
+  }
 }

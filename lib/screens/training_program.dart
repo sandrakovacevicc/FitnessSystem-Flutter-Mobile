@@ -338,9 +338,9 @@ class _SessionDetailPageState extends State<SessionDetailPage> {
 
   Icon getLevelIcon(String trainingProgramType) {
     return {
-      'Beginner': const Icon(Icons.trending_up, color: Colors.green),
-      'Intermediate': const Icon(Icons.trending_flat, color: Colors.orange),
-      'Advanced': const Icon(Icons.trending_down, color: Colors.red),
+      'beginner': const Icon(Icons.emoji_people, color: Colors.green),
+      'intermediate': const Icon(Icons.directions_run, color: Colors.orange),
+      'advanced': const Icon(Icons.sports_gymnastics, color: Colors.red),
     }[trainingProgramType] ?? const Icon(Icons.help, color: Colors.grey);
   }
 }
