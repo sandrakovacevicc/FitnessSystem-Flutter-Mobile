@@ -25,33 +25,58 @@ class Session {
     required this.trainerJMBG,
     required this.trainerName,
     required this.trainerSurname,
-    required this.trainerEmail, // Added email
-    required this.trainerSpecialty, // Added specialty
+    required this.trainerEmail,
+    required this.trainerSpecialty,
     required this.roomName,
     required this.trainingProgramName,
-    required this.trainingProgramDescription, // Added description
-    required this.trainingProgramType, // Added type
+    required this.trainingProgramDescription,
+    required this.trainingProgramType,
   });
 
   factory Session.fromJson(Map<String, dynamic> json) {
     return Session(
-      sessionId: json['sessionId'],
-      date: DateTime.parse(json['date']),
+      sessionId: json['sessionId'] ?? 0,
+      date: DateTime.tryParse(json['date'] ?? '') ?? DateTime.now(),
       time: TimeOfDay(
-        hour: int.parse(json['time'].split(':')[0]),
-        minute: int.parse(json['time'].split(':')[1]),
+        hour: int.tryParse(json['time']?.split(':')[0] ?? '0') ?? 0,
+        minute: int.tryParse(json['time']?.split(':')[1] ?? '0') ?? 0,
       ),
-      duration: json['duration'],
-      capacity: json['capacity'],
-      trainerJMBG: json['trainer']['jmbg'],
-      trainerName: json['trainer']['name'],
-      trainerSurname: json['trainer']['surname'],
-      trainerEmail: json['trainer']['email'], // Added email
-      trainerSpecialty: json['trainer']['specialty'], // Added specialty
-      roomName: json['room']['roomName'],
-      trainingProgramName: json['trainingProgram']['name'],
-      trainingProgramDescription: json['trainingProgram']['description'], // Added description
-      trainingProgramType: json['trainingProgram']['trainingType'], // Added type
+      duration: json['duration'] ?? 0,
+      capacity: json['capacity'] ?? 0,
+      trainerJMBG: json['trainer']?['jmbg'] ?? '',
+      trainerName: json['trainer']?['name'] ?? '',
+      trainerSurname: json['trainer']?['surname'] ?? '',
+      trainerEmail: json['trainer']?['email'] ?? '',
+      trainerSpecialty: json['trainer']?['specialty'] ?? '',
+      roomName: json['room']?['roomName'] ?? '',
+      trainingProgramName: json['trainingProgram']?['name'] ?? '',
+      trainingProgramDescription: json['trainingProgram']?['description'] ?? '',
+      trainingProgramType: json['trainingProgram']?['trainingType'] ?? '',
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'sessionId': sessionId,
+      'date': date.toIso8601String(),
+      'time': '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}', // TimeOfDay formatted as HH:mm
+      'duration': duration,
+      'capacity': capacity,
+      'trainer': {
+        'jmbg': trainerJMBG,
+        'name': trainerName,
+        'surname': trainerSurname,
+        'email': trainerEmail,
+        'specialty': trainerSpecialty,
+      },
+      'room': {
+        'roomName': roomName,
+      },
+      'trainingProgram': {
+        'name': trainingProgramName,
+        'description': trainingProgramDescription,
+        'trainingType': trainingProgramType,
+      },
+    };
   }
 }

@@ -19,6 +19,7 @@ class SessionDetailPage extends StatefulWidget {
 
 class _SessionDetailPageState extends State<SessionDetailPage> {
   late Future<Session> _session;
+  final SessionService _sessionService = SessionService(baseUrl: 'https://10.0.2.2:7083/api');
   final ReservationService _reservationService = ReservationService(baseUrl: 'https://10.0.2.2:7083/api');
 
   @override
@@ -283,6 +284,29 @@ class _SessionDetailPageState extends State<SessionDetailPage> {
                       ),
                     ),
                   ),
+                if (userRole == 'Admin')
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    color: Colors.black,
+                    child: Center(
+                      child: ElevatedButton(
+                        onPressed: () => _deleteSession(session.sessionId),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFFE6FE58),
+                          foregroundColor: Colors.black,
+                          padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          textStyle: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        child: const Text('Delete session'),
+                      ),
+                    ),
+                  ),
                 if (userRole == 'Client' && session.capacity > 0)
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -342,5 +366,24 @@ class _SessionDetailPageState extends State<SessionDetailPage> {
       'intermediate': const Icon(Icons.directions_run, color: Colors.orange),
       'advanced': const Icon(Icons.sports_gymnastics, color: Colors.red),
     }[trainingProgramType] ?? const Icon(Icons.help, color: Colors.grey);
+  }
+
+  _deleteSession(int sessionId) async {
+    try {
+      await _sessionService.deleteSession(sessionId);
+
+      setState(() {
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Session successfully deleted'),
+        ),
+      );
+
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to delete session: $e')),
+      );
+    }
   }
 }

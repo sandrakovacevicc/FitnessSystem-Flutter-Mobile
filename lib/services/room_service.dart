@@ -17,12 +17,12 @@ class RoomService {
         print('Successfully decoded JSON response');
         return jsonResponse.map((item) => Room.fromJson(item)).toList();
       } else {
-        print('Failed to load membership packages: ${response.statusCode}');
-        throw Exception('Failed to load membership packages');
+        print('Failed to load rooms: ${response.statusCode}');
+        throw Exception('Failed to load rooms');
       }
     } catch (e) {
       print('Error: $e');
-      throw Exception('Failed to load membership packages');
+      throw Exception('Failed to load rooms');
     }
   }
 }

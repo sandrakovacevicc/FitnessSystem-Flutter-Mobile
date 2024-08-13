@@ -97,7 +97,6 @@ class AuthService {
     }
   }
 
-
   Future<Map<String, dynamic>?> getUserData(String userId, String jwtToken, String role) async {
     Uri url;
 
@@ -167,5 +166,25 @@ class AuthService {
     }
   }
 
+  Future<List<User>> fetchTrainers() async {
+    final url = Uri.parse('http://10.0.2.2:5084/api/trainers');
+    final response = await http.get(
+      url,
+    );
 
+    if (response.statusCode == 200) {
+      final List<dynamic> trainersJson = jsonDecode(response.body);
+      return trainersJson.map((json) => User(
+        name: json['name'],
+        surname: json['surname'],
+        email: json['email'],
+        jmbg: json['jmbg'],
+        role: 'Trainer',
+        specialty: json['specialty'],
+      )).toList();
+    } else {
+      print('Failed to fetch trainers: ${response.body}');
+      return [];
+    }
+  }
 }
