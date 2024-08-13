@@ -16,11 +16,20 @@ class MembershipPackage {
   factory MembershipPackage.fromJson(Map<String, dynamic> json) {
     return MembershipPackage(
       membershipPackageId: json['membershipPackageId'] ?? 0,
-
-      name: json['name'],
-      description: json['description'],
+      name: json['name'] ?? '',
+      description: json['description'] ?? '',
       price: (json['price'] as num).toDouble(),
-      numberOfMonths: json['numberOfMonths'],
+      numberOfMonths: json['numberOfMonths'] ?? 0,
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'membershipPackageId': membershipPackageId,
+      'name': name,
+      'description': description,
+      'price': price,
+      'numberOfMonths': numberOfMonths,
+    };
   }
 }

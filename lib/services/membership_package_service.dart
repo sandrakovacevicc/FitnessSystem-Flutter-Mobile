@@ -39,4 +39,21 @@ class MembershipPackageService {
       throw Exception('Failed to load membership package');
     }
   }
+
+  Future<void> updateMembershipPackage(MembershipPackage membershipPackage) async {
+    try {
+      final response = await http.put(
+        Uri.parse('https://10.0.2.2:7083/api/membership-packages/${membershipPackage.membershipPackageId}'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: json.encode(membershipPackage.toJson()),
+      );
+      if (response.statusCode != 200) {
+        throw Exception('Failed to update membership package');
+      }
+    } catch (e) {
+      throw Exception('Failed to update membership package');
+    }
+  }
 }

@@ -1,25 +1,25 @@
 class TrainingProgram {
   final int trainingProgramId;
-  final String name;
-  final String description;
-  final int trainingDurationInMinutes;
-  final String trainingType;
+  final String? name;
+  final String? description;
+  final int? trainingDurationInMinutes; // Allow null values
+  final String? trainingType;
 
   TrainingProgram({
     required this.trainingProgramId,
-    required this.name,
-    required this.description,
-    required this.trainingDurationInMinutes,
-    required this.trainingType,
+    this.name,
+    this.description,
+    this.trainingDurationInMinutes,
+    this.trainingType,
   });
 
   factory TrainingProgram.fromJson(Map<String, dynamic> json) {
     return TrainingProgram(
-      trainingProgramId: json['trainingProgramId'],
-      name: json['name'],
-      description: json['description'],
-      trainingDurationInMinutes: json['trainingDurationInMinutes'],
-      trainingType: json['trainingType'],
+      trainingProgramId: json['trainingProgramId'] ?? 0,
+      name: json['name'] ?? '',
+      description: json['description'] ?? '',
+      trainingDurationInMinutes: json['trainingDurationInMinutes'] ?? 0,
+      trainingType: json['trainingType'] ?? '',
     );
   }
 
