@@ -24,6 +24,7 @@ class _PackagesState extends State<Packages> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const NavBar(automaticallyImplyLeading: true),
+      backgroundColor: Colors.grey[900],
       body: FutureBuilder<List<MembershipPackage>>(
         future: futureMembershipPackages,
         builder: (context, snapshot) {

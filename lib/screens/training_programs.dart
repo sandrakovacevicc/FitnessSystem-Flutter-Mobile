@@ -24,6 +24,7 @@ class _TrainingProgramsState extends State<TrainingPrograms> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const NavBar(automaticallyImplyLeading: true),
+      backgroundColor: Colors.grey[900],
       body: FutureBuilder<List<TrainingProgram>>(
         future: futureTrainingPrograms,
         builder: (context, snapshot) {
@@ -37,7 +38,6 @@ class _TrainingProgramsState extends State<TrainingPrograms> {
             final program = snapshot.data;
 
             final nonNullPrograms = program!.toList();
-
             return ListView.builder(
               padding: const EdgeInsets.all(16.0),
               itemCount: nonNullPrograms.length,
