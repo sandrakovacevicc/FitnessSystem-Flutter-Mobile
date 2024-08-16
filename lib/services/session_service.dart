@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 import 'package:fytness_system/models/dto/sessionAdd_dto.dart';
 import 'package:fytness_system/models/session.dart';
 import 'package:http/http.dart' as http;
@@ -93,6 +94,16 @@ class SessionService {
     } else {
       print('Error Response Body: ${response.body}');
       throw Exception('Failed to create session');
+    }
+  }
+
+  Future<Uint8List> generateQrCode(int sessionId) async {
+    final response = await http.get(Uri.parse('$baseUrl/sessions/$sessionId/qrcode'));
+
+    if (response.statusCode == 200) {
+      return response.bodyBytes;
+    } else {
+      throw Exception('Failed to generate QR code');
     }
   }
 

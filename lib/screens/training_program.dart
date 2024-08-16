@@ -25,15 +25,62 @@ class _SessionDetailPageState extends State<SessionDetailPage> {
   @override
   void initState() {
     super.initState();
-    _session = SessionService(baseUrl: 'https://10.0.2.2:7083/api').fetchSessionById(widget.sessionId);
+    _session = _sessionService.fetchSessionById(widget.sessionId);
   }
 
-  void _generateQRCode(Session session) {
-    // Logic for generating QR code
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('QR Code generation not implemented!')),
-    );
+  void _generateQRCode(Session session) async {
+    try {
+      final qrCodeData = await _sessionService.generateQrCode(session.sessionId);
+
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('QR Code'),
+            content: Image.memory(qrCodeData),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Close'),
+              ),
+            ],
+          );
+        },
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to generate QR code: $e')),
+      );
+    }
   }
+
+  _deleteSession(int sessionId) async {
+    try {
+      await _sessionService.deleteSession(sessionId);
+
+      setState(() {});
+      Navigator.pushReplacementNamed(context, 'trainings/');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Session successfully deleted'),
+        ),
+      );
+    } catch (e) {
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            e.toString().contains('reservations associated')
+                ? 'You cannot delete this session because there are reservations associated with it.'
+                : 'Failed to delete session: $e',
+          ),
+        ),
+      );
+    }
+  }
+
 
   void _bookNow(Session session) async {
     final now = DateTime.now();
@@ -50,7 +97,8 @@ class _SessionDetailPageState extends State<SessionDetailPage> {
       return;
     }
 
-    if (currentDate.isAfter(session.date) || (currentDate.isAtSameMomentAs(session.date) || (currentDate.isBefore(session.date) && currentTime.hour * 60 + currentTime.minute > session.time.hour * 60 + session.time.minute) ) ) {
+    if (currentDate.isAfter(session.date) ||
+        (currentDate.isAtSameMomentAs(session.date) && session.time.hour * 60 + session.time.minute < currentTime.hour * 60 + currentTime.minute)) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Reservation time cannot be after the session time!')),
       );
@@ -65,6 +113,18 @@ class _SessionDetailPageState extends State<SessionDetailPage> {
     }
 
     try {
+      final reservations = await _reservationService.fetchReservationsByUserId(clientJMBG);
+
+      final hasReserved = reservations.any((reservation) =>
+      reservation.sessionId == session.sessionId);
+
+      if (hasReserved) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('You have already reserved this session!')),
+        );
+        return;
+      }
+
       await _reservationService.createReservation(
         clientJMBG: clientJMBG,
         sessionId: session.sessionId,
@@ -76,6 +136,12 @@ class _SessionDetailPageState extends State<SessionDetailPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Reservation successfully created!')),
       );
+
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        'trainings/',
+            (Route<dynamic> route) => false,
+      );
     } catch (e, stackTrace) {
       print('Failed to create reservation: $e');
       print('Stack trace: $stackTrace');
@@ -86,8 +152,13 @@ class _SessionDetailPageState extends State<SessionDetailPage> {
     }
   }
 
+
+
+
   @override
   Widget build(BuildContext context) {
+    final userRole = Provider.of<UserProvider>(context).user?.role ?? '';
+
     return Scaffold(
       body: FutureBuilder<Session>(
         future: _session,
@@ -103,7 +174,6 @@ class _SessionDetailPageState extends State<SessionDetailPage> {
             String programImageUrl = getProgramImage(session.trainingProgramName);
             String trainerImageUrl = getTrainerImage(session.trainerName);
             Icon levelIcon = getLevelIcon(session.trainingProgramType);
-            final userRole = Provider.of<UserProvider>(context).user?.role ?? '';
 
             return Column(
               children: [
@@ -303,7 +373,7 @@ class _SessionDetailPageState extends State<SessionDetailPage> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        child: const Text('Delete session'),
+                        child: const Text('Delete Session'),
                       ),
                     ),
                   ),
@@ -313,9 +383,7 @@ class _SessionDetailPageState extends State<SessionDetailPage> {
                     color: Colors.black,
                     child: Center(
                       child: ElevatedButton(
-                        onPressed: () {
-                          _bookNow(session);
-                        },
+                        onPressed: () => _bookNow(session),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFFE6FE58),
                           foregroundColor: Colors.black,
@@ -339,6 +407,8 @@ class _SessionDetailPageState extends State<SessionDetailPage> {
       ),
     );
   }
+
+
 
   String getProgramImage(String programName) {
     return {
@@ -367,31 +437,5 @@ class _SessionDetailPageState extends State<SessionDetailPage> {
       'advanced': const Icon(Icons.sports_gymnastics, color: Colors.red),
     }[trainingProgramType] ?? const Icon(Icons.help, color: Colors.grey);
   }
-
-  _deleteSession(int sessionId) async {
-    try {
-      await _sessionService.deleteSession(sessionId);
-
-      setState(() {});
-      Navigator.pushReplacementNamed(context, 'trainings/');
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Session successfully deleted'),
-        ),
-      );
-    } catch (e) {
-      // Handle the specific exception with a user-friendly message
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            e.toString().contains('reservations associated')
-                ? 'You cannot delete this session because there are reservations associated with it.'
-                : 'Failed to delete session: $e',
-          ),
-        ),
-      );
-    }
-  }
-
 
 }

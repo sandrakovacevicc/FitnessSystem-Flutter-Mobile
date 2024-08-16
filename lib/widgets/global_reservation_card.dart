@@ -10,6 +10,7 @@ class ReservationCard extends StatelessWidget {
   final String status;
   final int reservationId;
   final VoidCallback onDelete;
+  final VoidCallback onCamera;
 
   const ReservationCard({
     super.key,
@@ -21,6 +22,7 @@ class ReservationCard extends StatelessWidget {
     required this.status,
     required this.reservationId,
     required this.onDelete,
+    required this.onCamera,
   });
 
   @override
@@ -52,7 +54,7 @@ class ReservationCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Training Program Name with Icon
+
                   Row(
                     children: [
                       const Icon(
@@ -75,7 +77,7 @@ class ReservationCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
 
-                  // Training Date and Time with Icon
+
                   Row(
                     children: [
                       const Icon(
@@ -97,7 +99,7 @@ class ReservationCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
 
-                  // Reservation Details with Icons
+
                   Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
@@ -152,6 +154,16 @@ class ReservationCard extends StatelessWidget {
                   ),
                 ],
               ),
+            ),
+          ),
+
+          // Delete Button
+          Positioned(
+            top: 8,
+            right: 48,
+            child: IconButton(
+              icon: const Icon(Icons.camera_alt, color: Colors.white), // Kamera ikona
+              onPressed: onCamera,
             ),
           ),
 

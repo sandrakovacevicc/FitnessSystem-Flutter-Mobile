@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fytness_system/providers/user_provider.dart';
+import 'package:fytness_system/screens/qr_scanner.dart';
 import 'package:fytness_system/services/reservation_service.dart';
 import 'package:fytness_system/services/session_service.dart';
 import 'package:fytness_system/models/reservation.dart';
@@ -59,6 +60,16 @@ class _ReservationsState extends State<Reservations> {
     }
   }
 
+  void _openCamera() async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => QRScannerScreen()),
+    );
+
+    print('Scanned QR code: $result');
+  }
+
+
   void _onItemTapped(int index) {
     setState(() {
       selectedIndex = index;
@@ -115,6 +126,7 @@ class _ReservationsState extends State<Reservations> {
                           trainingTime: reservation.trainingTime,
                           trainingDate: reservation.trainingDate,
                           reservationId: reservation.reservationId,
+                          onCamera: _openCamera,
                           onDelete: () => _deleteReservation(reservation.reservationId),
                         );
                       },
