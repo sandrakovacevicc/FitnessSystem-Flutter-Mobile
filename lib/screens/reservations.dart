@@ -84,6 +84,7 @@ class _ReservationsState extends State<Reservations> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const NavBar(automaticallyImplyLeading: false),
+      backgroundColor: Colors.grey[900],
       body: Consumer<UserProvider>(
         builder: (context, userProvider, child) {
           final userRole = userProvider.user?.role;
@@ -97,7 +98,7 @@ class _ReservationsState extends State<Reservations> {
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return const Center(child: Text('No data found.'));
+                  return const Center(child: Text("You don't have any reservations", style: TextStyle(color: Color(0xFFE6FE58), fontWeight: FontWeight.bold, fontSize: 24 ),));
                 } else {
                   final data = snapshot.data!;
                   return Padding(
@@ -131,7 +132,7 @@ class _ReservationsState extends State<Reservations> {
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return const Center(child: Text('No data found.'));
+                  return const Center(child: Text("You don't have any sessions", style: TextStyle(color: Color(0xFFE6FE58), fontWeight: FontWeight.bold, fontSize: 20),));
                 } else {
                   final data = snapshot.data!;
                   return Padding(
@@ -183,7 +184,7 @@ class _ReservationsState extends State<Reservations> {
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       crossAxisSpacing: 16.0,
-                      mainAxisSpacing: 16.0,
+                      mainAxisSpacing: 22.0,
                       childAspectRatio: 1.0,
                     ),
                     itemCount: titles.length,

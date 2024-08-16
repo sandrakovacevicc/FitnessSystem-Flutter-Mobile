@@ -187,4 +187,93 @@ class AuthService {
       return [];
     }
   }
+
+  Future<List<User>> fetchClients() async {
+    final url = Uri.parse('https://10.0.2.2:7083/api/clients');
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final List<dynamic> clientsJson = jsonDecode(response.body);
+      return clientsJson.map((json) => User(
+        name: json['name'],
+        surname: json['surname'],
+        email: json['email'],
+        jmbg: json['jmbg'],
+        role: 'Clients',
+        birthdate: json['birthdate'] != null ? DateTime.parse(json['birthdate']) : null,
+        membershipPackageId: json['membershipPackageId'],
+        mobileNumber: json['mobileNumber'],
+      )).toList();
+    } else {
+      print('Failed to fetch clients: ${response.body}');
+      return [];
+    }
+  }
+
+  Future<List<User>> searchClients(String searchTerm) async {
+    final url = Uri.parse('https://10.0.2.2:7083/api/clients/search?searchTerm=$searchTerm');
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final List<dynamic> clientsJson = jsonDecode(response.body);
+      return clientsJson.map((json) => User(
+        name: json['name'],
+        surname: json['surname'],
+        email: json['email'],
+        jmbg: json['jmbg'],
+        role: 'Clients',
+        birthdate: DateTime.parse(json['birthdate']),
+        membershipPackageId: json['membershipPackageId'],
+        mobileNumber: json['mobileNumber'],
+      )).toList();
+    } else {
+      print('Failed to fetch clients: ${response.body}');
+      return [];
+    }
+  }
+
+  Future<void> updateClient(User user) async {
+    final url = Uri.parse('https://10.0.2.2:7083/api/clients/${user.jmbg}');
+    final response = await http.put(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'name': user.name,
+        'surname': user.surname,
+        'email': user.email,
+        'birthdate': user.birthdate?.toIso8601String(),
+        'mobileNumber': user.mobileNumber,
+        'membershipPackageId': user.membershipPackageId,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      print('Client updated successfully');
+    } else {
+      print('Failed to update client: ${response.body}');
+    }
+  }
+
+  Future<void> updateTrainer(User user) async {
+    final url = Uri.parse('https://10.0.2.2:7083/api/trainers/${user.jmbg}');
+    final response = await http.put(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'name': user.name,
+        'surname': user.surname,
+        'email': user.email,
+        'specialty': user.specialty,
+
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      print('Trainer updated successfully');
+    } else {
+      print('Failed to update trainer: ${response.body}');
+    }
+  }
+
+
 }

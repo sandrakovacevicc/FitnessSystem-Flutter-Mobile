@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fytness_system/providers/user_provider.dart';
+import 'package:provider/provider.dart';
 
 class NavBar extends StatefulWidget implements PreferredSizeWidget {
   final bool automaticallyImplyLeading;
@@ -28,6 +30,15 @@ class _NavBarState extends State<NavBar> {
         'assets/logo1.png',
         height: 45,
       ),
+      actions: [
+        IconButton(
+          icon: Icon(Icons.logout, color: Colors.white),
+          onPressed: () {
+            Provider.of<UserProvider>(context, listen: false).logout();
+            Navigator.pushReplacementNamed(context, 'login/');
+          },
+        ),
+      ],
     );
   }
 }

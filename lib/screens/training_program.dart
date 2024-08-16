@@ -50,7 +50,7 @@ class _SessionDetailPageState extends State<SessionDetailPage> {
       return;
     }
 
-    if (currentDate.isAfter(session.date) || (currentDate.isAtSameMomentAs(session.date) && currentTime.hour * 60 + currentTime.minute > session.time.hour * 60 + session.time.minute)) {
+    if (currentDate.isAfter(session.date) || (currentDate.isAtSameMomentAs(session.date) || (currentDate.isBefore(session.date) && currentTime.hour * 60 + currentTime.minute > session.time.hour * 60 + session.time.minute) ) ) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Reservation time cannot be after the session time!')),
       );
@@ -372,18 +372,26 @@ class _SessionDetailPageState extends State<SessionDetailPage> {
     try {
       await _sessionService.deleteSession(sessionId);
 
-      setState(() {
-      });
+      setState(() {});
+      Navigator.pushReplacementNamed(context, 'trainings/');
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Session successfully deleted'),
         ),
       );
-
     } catch (e) {
+      // Handle the specific exception with a user-friendly message
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to delete session: $e')),
+        SnackBar(
+          content: Text(
+            e.toString().contains('reservations associated')
+                ? 'You cannot delete this session because there are reservations associated with it.'
+                : 'Failed to delete session: $e',
+          ),
+        ),
       );
     }
   }
+
+
 }

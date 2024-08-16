@@ -32,4 +32,14 @@ class MembershipPackage {
       'numberOfMonths': numberOfMonths,
     };
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is MembershipPackage &&
+              runtimeType == other.runtimeType &&
+              membershipPackageId == other.membershipPackageId;
+
+  @override
+  int get hashCode => membershipPackageId.hashCode;
 }

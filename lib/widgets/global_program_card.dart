@@ -17,26 +17,20 @@ class GlobalProgramCard extends StatefulWidget {
 }
 
 class _GlobalProgramCardState extends State<GlobalProgramCard> {
-  late TextEditingController _nameController;
   late TextEditingController _descriptionController;
   late TextEditingController _trainingDurationInMinutesController;
-  late TextEditingController _trainingTypeController;
 
   @override
   void initState() {
     super.initState();
-    _nameController = TextEditingController(text: widget.trainingProgram.name ?? '');
     _descriptionController = TextEditingController(text: widget.trainingProgram.description ?? '');
     _trainingDurationInMinutesController = TextEditingController(text: widget.trainingProgram.trainingDurationInMinutes?.toString() ?? '0');
-    _trainingTypeController = TextEditingController(text: widget.trainingProgram.trainingType ?? '');
   }
 
   @override
   void dispose() {
-    _nameController.dispose();
     _descriptionController.dispose();
     _trainingDurationInMinutesController.dispose();
-    _trainingTypeController.dispose();
     super.dispose();
   }
 
@@ -51,12 +45,26 @@ class _GlobalProgramCardState extends State<GlobalProgramCard> {
   }
 
   Future<void> _onEditButtonPressed() async {
+    if (_descriptionController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Description cannot be empty')),
+      );
+      return;
+    }
+
+    if (int.tryParse(_trainingDurationInMinutesController.text) == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Invalid duration format')),
+      );
+      return;
+    }
+
     final updatedProgram = TrainingProgram(
       trainingProgramId: widget.id,
-      name: _nameController.text,
+      name: widget.trainingProgram.name, // Ne menjamo ime
       description: _descriptionController.text,
       trainingDurationInMinutes: int.tryParse(_trainingDurationInMinutesController.text) ?? 0,
-      trainingType: _trainingTypeController.text,
+      trainingType: widget.trainingProgram.trainingType, // Ne menjamo tip treninga
     );
 
     try {
@@ -107,17 +115,12 @@ class _GlobalProgramCardState extends State<GlobalProgramCard> {
                   children: [
                     const Icon(Icons.card_membership, color: Colors.black, size: 28),
                     const SizedBox(width: 8),
-                    Flexible(
-                      child: TextField(
-                        controller: _nameController,
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                        ),
+                    Text(
+                      widget.trainingProgram.name ?? '',
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
                       ),
                     ),
                   ],
@@ -169,18 +172,11 @@ class _GlobalProgramCardState extends State<GlobalProgramCard> {
                           children: [
                             const Icon(Icons.category, color: Colors.black, size: 18),
                             const SizedBox(width: 6),
-                            SizedBox(
-                              width: 80,
-                              child: TextField(
-                                controller: _trainingTypeController,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.grey,
-                                ),
-                                decoration: const InputDecoration(
-                                  border: InputBorder.none,
-                                  hintText: 'Enter training type',
-                                ),
+                            Text(
+                              widget.trainingProgram.trainingType ?? '',
+                              style: const TextStyle(
+                                fontSize: 16,
+                                color: Colors.grey,
                               ),
                             ),
                           ],

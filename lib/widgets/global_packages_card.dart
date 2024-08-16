@@ -51,8 +51,8 @@ class _GlobalPackagesCardState extends State<GlobalPackagesCard> {
 
   Future<void> _onEditButtonPressed() async {
     final updatedPackage = MembershipPackage(
-      membershipPackageId: widget.id, // Use widget.id here
-      name: _nameController.text,
+      membershipPackageId: widget.id,
+      name: widget.membershipPackage.name, // Name se ne menja
       description: _descriptionController.text,
       price: double.tryParse(_priceController.text) ?? 0.0,
       numberOfMonths: int.tryParse(_monthsController.text) ?? 0,
@@ -105,15 +105,12 @@ class _GlobalPackagesCardState extends State<GlobalPackagesCard> {
                     const Icon(Icons.card_membership, color: Colors.black, size: 28),
                     const SizedBox(width: 8),
                     Flexible(
-                      child: TextField(
-                        controller: _nameController,
+                      child: Text(
+                        _nameController.text,
                         style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
-                        ),
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
                         ),
                       ),
                     ),
@@ -145,7 +142,7 @@ class _GlobalPackagesCardState extends State<GlobalPackagesCard> {
                             const Icon(Icons.payment, color: Colors.black, size: 18),
                             const SizedBox(width: 6),
                             SizedBox(
-                              width: 90, // Fixed width for TextField to avoid layout issues
+                              width: 90,
                               child: TextField(
                                 controller: _priceController,
                                 keyboardType: TextInputType.number,
@@ -188,7 +185,7 @@ class _GlobalPackagesCardState extends State<GlobalPackagesCard> {
                     ElevatedButton(
                       onPressed: _onEditButtonPressed,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFE6FE58), // Background color
+                        backgroundColor: const Color(0xFFE6FE58),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15.0),
                         ),

@@ -54,13 +54,21 @@ class SessionService {
 
   Future<Session> deleteSession(int sessionId) async {
     final response = await http.delete(Uri.parse('$baseUrl/sessions/$sessionId'));
+
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = json.decode(response.body);
       return Session.fromJson(data);
     } else {
-      throw Exception('Failed to delete session');
+      print('Error Response Body: ${response.statusCode}');
+
+      if (response.statusCode == 500) {
+        throw Exception('You cannot delete this session because there are reservations associated with it.');
+      } else {
+        throw Exception('Failed to delete session');
+      }
     }
   }
+
 
   Future<SessionAddDto> createSession(SessionAddDto session) async {
     final String url = '$baseUrl/sessions';
@@ -78,8 +86,11 @@ class SessionService {
 
     if (response.statusCode == 200) {
       return session;
+    } else if (response.statusCode == 409) {
+      String errorMessage = 'The selected trainer is already booked for this time slot. Please choose a different time or trainer.';
+      print(errorMessage);
+      throw Exception(errorMessage);
     } else {
-      // Print the error response for debugging
       print('Error Response Body: ${response.body}');
       throw Exception('Failed to create session');
     }

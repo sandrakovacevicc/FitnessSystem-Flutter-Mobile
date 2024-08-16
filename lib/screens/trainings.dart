@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:fytness_system/widgets/global_menu.dart';
 import 'package:fytness_system/widgets/global_session_card.dart';
 import 'package:intl/intl.dart';
-import 'package:fytness_system/widgets/global_button.dart';
 import 'package:fytness_system/widgets/global_navbar.dart';
 import 'package:fytness_system/models/session.dart';
 import 'package:fytness_system/services/session_service.dart';
@@ -65,7 +64,7 @@ class _TrainingsState extends State<Trainings> {
       curve: Curves.easeInOut,
     );
 
-    _fetchSessions(); // Fetch sessions for the initially selected date
+    _fetchSessions();
   }
 
   void _previousDate() {
@@ -74,7 +73,7 @@ class _TrainingsState extends State<Trainings> {
         selectedIndex--;
         _scrollController.animateTo(selectedIndex * 60.0,
             duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
-        _fetchSessions(); // Fetch sessions for the new selected date
+        _fetchSessions();
       }
     });
   }
@@ -142,42 +141,6 @@ class _TrainingsState extends State<Trainings> {
                     padding: const EdgeInsets.all(10.0),
                     child: Column(
                       children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: SizedBox(
-                                  height: 48,
-                                  child: TextField(
-                                    controller: searchController,
-                                    decoration: InputDecoration(
-                                      hintText: 'Search...',
-                                      hintStyle: const TextStyle(color: Colors.white),
-                                      filled: true,
-                                      fillColor: Colors.black,
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(13),
-                                        borderSide: BorderSide.none,
-                                      ),
-                                    ),
-                                    style: const TextStyle(color: Colors.white),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 10),
-                            GlobalButton(
-                              text: 'Search',
-                              onPressed: () {
-                                // Add your search logic here
-                              },
-                              backgroundColor: const Color(0xFFE6FE58),
-                              textColor: const Color(0xFF050505),
-                              width: 100,
-                            ),
-                          ],
-                        ),
                         const SizedBox(height: 20),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -201,7 +164,7 @@ class _TrainingsState extends State<Trainings> {
                                           setState(() {
                                             selectedIndex = index;
                                           });
-                                          _fetchSessions(); // Fetch sessions for the newly selected date
+                                          _fetchSessions();
                                         },
                                         child: Container(
                                           decoration: BoxDecoration(

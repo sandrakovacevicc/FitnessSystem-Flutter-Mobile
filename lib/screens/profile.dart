@@ -55,10 +55,10 @@ class _ProfileState extends State<Profile> {
       membershipPackageService.fetchMembershipPackageById(user!.membershipPackageId!).then((membershipPackage) {
         if (membershipPackage != null) {
           setState(() {
-            _membershipNameController.text = membershipPackage.name ?? '';
-            _membershipDescriptionController.text = membershipPackage.description ?? '';
-            _membershipPriceController.text = membershipPackage.price.toString() ?? '';
-            _membershipNumberOfMonthsController.text = membershipPackage.numberOfMonths.toString() ?? '';
+            _membershipNameController.text = membershipPackage.name;
+            _membershipDescriptionController.text = membershipPackage.description;
+            _membershipPriceController.text = membershipPackage.price.toString();
+            _membershipNumberOfMonthsController.text = membershipPackage.numberOfMonths.toString();
           });
         }
       });
@@ -111,7 +111,6 @@ class _ProfileState extends State<Profile> {
               child: Consumer<UserProvider>(
                 builder: (context, userProvider, child) {
                   final user = userProvider.user;
-                  final membershipPackage = userProvider.membershipPackage;
                   if (user == null) {
                     return const CircularProgressIndicator();
                   }

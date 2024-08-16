@@ -10,7 +10,7 @@ class RoomService {
 
   Future<List<Room>> fetchRooms() async {
     try {
-      final response = await http.get(Uri.parse(baseUrl));
+      final response = await http.get(Uri.parse('${baseUrl}/rooms'));
 
       if (response.statusCode == 200) {
         List jsonResponse = json.decode(response.body);
@@ -25,4 +25,6 @@ class RoomService {
       throw Exception('Failed to load rooms');
     }
   }
+
+
 }

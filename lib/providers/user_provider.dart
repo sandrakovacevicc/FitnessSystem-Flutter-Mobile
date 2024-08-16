@@ -26,4 +26,9 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void logout() {
+    _user = null;
+    _membershipPackage = null;
+    notifyListeners();
+  }
 }

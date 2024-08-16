@@ -14,7 +14,7 @@ class Rooms extends StatefulWidget {
 class _RoomsState extends State<Rooms> {
   late Future<List<Room>> _roomsFuture;
   final RoomService _roomService =
-  RoomService(baseUrl: 'https://10.0.2.2:7083/api/rooms');
+  RoomService(baseUrl: 'https://10.0.2.2:7083/api');
 
   @override
   void initState() {
