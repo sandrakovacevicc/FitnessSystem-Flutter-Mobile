@@ -85,7 +85,7 @@ class ReservationService {
   }
 
   Future<void> confirmReservation(int sessionId, String clientJMBG) async {
-    final url = Uri.parse('$baseUrl/confirm?sessionId=$sessionId&clientJmbg=$clientJMBG');
+    final url = Uri.parse('$baseUrl/reservations/confirm?sessionId=$sessionId&clientJmbg=$clientJMBG');
 
     final response = await http.post(
       url,
@@ -95,15 +95,23 @@ class ReservationService {
     );
 
     if (response.statusCode == 200) {
+      // Uspešno potvrđena rezervacija, ne radimo ništa jer ne očekujemo telo odgovora
       return;
     } else if (response.statusCode == 404) {
-
-      final errorResponse = json.decode(response.body);
-      throw Exception('Reservation not found: ${errorResponse['message']}');
+      if (response.body.isNotEmpty) {
+        final errorResponse = json.decode(response.body);
+        throw Exception('Reservation not found: ${errorResponse['message']}');
+      } else {
+        throw Exception('Reservation not found: No error message provided');
+      }
     } else {
-
-      final errorResponse = json.decode(response.body);
-      throw Exception('Error confirming reservation: ${errorResponse['message']}');
+      if (response.body.isNotEmpty) {
+        final errorResponse = json.decode(response.body);
+        throw Exception('Error confirming reservation: ${errorResponse['message']}');
+      } else {
+        throw Exception('Error confirming reservation: No error message provided');
+      }
     }
   }
+
 }

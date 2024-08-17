@@ -36,7 +36,8 @@ class _SessionDetailPageState extends State<SessionDetailPage> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: const Text('QR Code'),
+            backgroundColor:const Color(0xFFE6FE58),
+            title: const Text('QR Code', style: TextStyle(color: Colors.black),),
             content: Image.memory(qrCodeData),
             actions: [
               TextButton(
