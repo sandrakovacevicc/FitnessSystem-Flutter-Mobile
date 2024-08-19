@@ -98,10 +98,10 @@ class _MainScreenState extends State<MainScreen> {
 
   String getTrainerImage(String trainerName) {
     return {
-      'Sandra': 'assets/sandra.jpg',
-      'Nikola': 'assets/nikola.jpg',
-      'Milica': 'assets/milica.jpg',
-      'Zika': 'assets/zika.jpg',
+      'Sandra Kovacevic': 'assets/sandra.jpg',
+      'Nikola Nikolic': 'assets/nikola.jpg',
+      'Milica Milic': 'assets/milica.jpg',
+      'Zika Zikic': 'assets/zika.jpg',
     }[trainerName] ?? 'assets/default_trainer.jpg';
   }
 
@@ -220,10 +220,10 @@ class _MainScreenState extends State<MainScreen> {
                         child: ListView(
                           scrollDirection: Axis.horizontal,
                           children: [
-                            _trainerAvatar('Zika'),
-                            _trainerAvatar('Sandra'),
-                            _trainerAvatar('Nikola'),
-                            _trainerAvatar('Milica'),
+                            _trainerAvatar('Zika Zikic'),
+                            _trainerAvatar('Sandra Kovacevic'),
+                            _trainerAvatar('Nikola Nikolic'),
+                            _trainerAvatar('Milica Milic'),
                           ],
                         ),
                       ),

@@ -126,7 +126,7 @@ class _LoginState extends State<Login> {
       builder: (context) => AlertDialog(
         backgroundColor: const Color(0xFFE6FE58),
         title: const Text(
-          'Success',
+          'Welcome',
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
         content: Text(
