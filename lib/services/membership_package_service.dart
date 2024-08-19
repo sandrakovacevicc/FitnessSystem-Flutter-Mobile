@@ -4,7 +4,7 @@ import 'package:fytness_system/models/membership_package.dart';
 import 'package:http/http.dart' as http;
 
 class MembershipPackageService {
-  final String baseUrl = 'http://10.0.2.2:5084/api/membership-packages';
+  final String baseUrl = 'http://192.168.1.79:5084/api/membership-packages';
 
   Future<List<MembershipPackage>> fetchMembershipPackages() async {
     try {
@@ -43,7 +43,7 @@ class MembershipPackageService {
   Future<void> updateMembershipPackage(MembershipPackage membershipPackage) async {
     try {
       final response = await http.put(
-        Uri.parse('https://10.0.2.2:7083/api/membership-packages/${membershipPackage.membershipPackageId}'),
+        Uri.parse('https://192.168.1.79:7083/api/membership-packages/${membershipPackage.membershipPackageId}'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

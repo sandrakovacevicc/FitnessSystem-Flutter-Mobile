@@ -22,9 +22,9 @@ class Reservations extends StatefulWidget {
 class _ReservationsState extends State<Reservations> {
   int selectedIndex = 2;
   final ReservationService _reservationService =
-  ReservationService(baseUrl: 'https://10.0.2.2:7083/api');
+  ReservationService(baseUrl: 'https://192.168.1.79:7083/api');
   final SessionService _sessionService =
-  SessionService(baseUrl: 'https://10.0.2.2:7083/api/sessions');
+  SessionService(baseUrl: 'https://192.168.1.79:7083/api/sessions');
 
   @override
   void initState() {

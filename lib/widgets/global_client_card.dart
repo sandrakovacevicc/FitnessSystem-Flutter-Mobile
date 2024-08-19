@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fytness_system/models/user.dart';
 import 'package:fytness_system/screens/client_edit.dart';
+import 'package:intl/intl.dart';
 
 class GlobalClientCard extends StatelessWidget {
   final User user;
@@ -9,6 +10,10 @@ class GlobalClientCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final DateFormat dateFormat = DateFormat('yyyy-MM-dd');
+    final String formattedBirthdate = dateFormat.format(user.birthdate!);
+
     return Card(
       color: Colors.black,
       shape: RoundedRectangleBorder(
@@ -18,6 +23,7 @@ class GlobalClientCard extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(10.0),
@@ -69,7 +75,7 @@ class GlobalClientCard extends StatelessWidget {
                       const Icon(Icons.cake, color: Colors.white70, size: 18),
                       const SizedBox(width: 4),
                       Text(
-                        'Birthday: ${user.birthdate}',
+                        'Birthday: $formattedBirthdate',
                         style: const TextStyle(
                           color: Colors.white70,
                           fontSize: 12,

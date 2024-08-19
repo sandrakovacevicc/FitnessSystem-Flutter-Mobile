@@ -19,8 +19,8 @@ class SessionDetailPage extends StatefulWidget {
 
 class _SessionDetailPageState extends State<SessionDetailPage> {
   late Future<Session> _session;
-  final SessionService _sessionService = SessionService(baseUrl: 'https://10.0.2.2:7083/api');
-  final ReservationService _reservationService = ReservationService(baseUrl: 'https://10.0.2.2:7083/api');
+  final SessionService _sessionService = SessionService(baseUrl: 'https://192.168.1.79:7083/api');
+  final ReservationService _reservationService = ReservationService(baseUrl: 'https://192.168.1.79:7083/api');
 
   @override
   void initState() {
@@ -201,133 +201,135 @@ class _SessionDetailPageState extends State<SessionDetailPage> {
                   ],
                 ),
                 Expanded(
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                session.trainingProgramName,
-                                style: const TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFFE6FE58),
-                                ),
-                              ),
-                              Text(
-                                DateFormat('d MMM yyyy').format(session.date),
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 8),
-                          Row(
-                            children: [
-                              levelIcon,
-                              const SizedBox(width: 8),
-                              Text(
-                                'Starts at: ${DateFormat('HH:mm').format(DateTime(0, 0, 0, session.time.hour, session.time.minute))}h',
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            'Duration: ${session.duration} min',
-                            style: const TextStyle(
-                              fontSize: 16,
-                              color: Colors.grey,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            'Level: ${session.trainingProgramType}',
-                            style: const TextStyle(
-                              fontSize: 16,
-                              color: Colors.grey,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            'Room: ${session.roomName}',
-                            style: const TextStyle(
-                              fontSize: 16,
-                              color: Colors.grey,
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                          Text(
-                            session.trainingProgramDescription,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              color: Colors.white,
-                            ),
-                          ),
-                          const SizedBox(height: 30),
-                          const Text(
-                            'Instructor',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          Row(
-                            children: [
-                              CircleAvatar(
-                                radius: 30,
-                                backgroundImage: AssetImage(trainerImageUrl),
-                              ),
-                              const SizedBox(width: 20),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    '${session.trainerName} ${session.trainerSurname}',
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                    ),
+                  child: SingleChildScrollView(
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  session.trainingProgramName,
+                                  style: const TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xFFE6FE58),
                                   ),
-                                  const SizedBox(height: 5),
-                                  Text(
-                                    'Working: ${session.trainerSpecialty}',
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.grey,
-                                    ),
+                                ),
+                                Text(
+                                  DateFormat('d MMM yyyy').format(session.date),
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.grey,
                                   ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 20),
-                          Center(
-                            child: Text(
-                              'For more information, contact: ${session.trainerEmail}',
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 8),
+                            Row(
+                              children: [
+                                levelIcon,
+                                const SizedBox(width: 8),
+                                Text(
+                                  'Starts at: ${DateFormat('HH:mm').format(DateTime(0, 0, 0, session.time.hour, session.time.minute))}h',
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              'Duration: ${session.duration} min',
                               style: const TextStyle(
-                                fontSize: 12,
+                                fontSize: 16,
                                 color: Colors.grey,
                               ),
                             ),
-                          ),
-                        ],
+                            const SizedBox(height: 8),
+                            Text(
+                              'Level: ${session.trainingProgramType}',
+                              style: const TextStyle(
+                                fontSize: 16,
+                                color: Colors.grey,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              'Room: ${session.roomName}',
+                              style: const TextStyle(
+                                fontSize: 16,
+                                color: Colors.grey,
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            Text(
+                              session.trainingProgramDescription,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                color: Colors.white,
+                              ),
+                            ),
+                            const SizedBox(height: 30),
+                            const Text(
+                              'Instructor',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Row(
+                              children: [
+                                CircleAvatar(
+                                  radius: 30,
+                                  backgroundImage: AssetImage(trainerImageUrl),
+                                ),
+                                const SizedBox(width: 20),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '${session.trainerName} ${session.trainerSurname}',
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 5),
+                                    Text(
+                                      'Working: ${session.trainerSpecialty}',
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 20),
+                            Center(
+                              child: Text(
+                                'For more information, contact: ${session.trainerEmail}',
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -440,3 +442,4 @@ class _SessionDetailPageState extends State<SessionDetailPage> {
   }
 
 }
+

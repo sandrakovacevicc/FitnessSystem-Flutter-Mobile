@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:fytness_system/widgets/global_navbar.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:fytness_system/services/reservation_service.dart';
 import 'package:provider/provider.dart';
@@ -15,7 +14,7 @@ class QRScannerScreen extends StatefulWidget {
 class _QRScannerScreenState extends State<QRScannerScreen> {
   final GlobalKey _qrKey = GlobalKey();
   QRViewController? _qrController;
-  final ReservationService _reservationService = ReservationService(baseUrl: 'https://10.0.2.2:7083/api');
+  final ReservationService _reservationService = ReservationService(baseUrl: 'https://192.168.1.79:7083/api');
 
   @override
   void reassemble() {
@@ -29,7 +28,10 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const NavBar(automaticallyImplyLeading: true,),
+      appBar: AppBar(
+        title: const Text('Scan QR Code', style: TextStyle(color: Colors.white),),
+        backgroundColor: Colors.black,
+      ),
       body: Stack(
         children: [
           QRView(
@@ -41,17 +43,6 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
               borderLength: 30,
               borderWidth: 10,
               cutOutSize: MediaQuery.of(context).size.width * 0.8,
-            ),
-          ),
-          Positioned(
-            bottom: 20,
-            left: 20,
-            child: ElevatedButton(
-              onPressed: () {
-
-                _simulateQRScan('3032');
-              },
-              child: Text('Simulate QR Scan'),
             ),
           ),
         ],

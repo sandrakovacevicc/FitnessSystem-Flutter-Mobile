@@ -19,7 +19,7 @@ class Sessions extends StatefulWidget {
 }
 
 class _SessionsState extends State<Sessions> {
-  final String baseUrl = 'https://10.0.2.2:7083/api';
+  final String baseUrl = 'https://192.168.1.79:7083/api';
   late Future<List<Room>> _rooms;
   late Future<List<User>> _trainers;
   late Future<List<TrainingProgram>> _programs;

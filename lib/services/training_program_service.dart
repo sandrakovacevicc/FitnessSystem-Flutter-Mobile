@@ -4,7 +4,7 @@ import 'package:fytness_system/models/training_program.dart';
 import 'package:http/http.dart' as http;
 
 class TrainingProgramService {
-  final String baseUrl = 'https://10.0.2.2:7083/api/training-programs';
+  final String baseUrl = 'https://192.168.1.79:7083/api/training-programs';
 
   Future<List<TrainingProgram>> fetchTrainingPrograms() async {
     try {
