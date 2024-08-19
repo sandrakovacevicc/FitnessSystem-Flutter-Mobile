@@ -104,7 +104,7 @@ class _EditClientScreenState extends State<EditClientScreen> {
             child: Container(
               decoration: const BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/client.jpg'),
+                  image: AssetImage('assets/pro.png'),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -117,7 +117,7 @@ class _EditClientScreenState extends State<EditClientScreen> {
               child: SingleChildScrollView(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.7), // Adjust opacity to see the background image
+                    color: Colors.black.withOpacity(0.7),
                     borderRadius: BorderRadius.circular(12.0),
                   ),
                   padding: const EdgeInsets.all(18.0),
@@ -126,7 +126,7 @@ class _EditClientScreenState extends State<EditClientScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: 20), // Increase or decrease this to adjust the space
+                        const SizedBox(height: 20),
                         _buildReadOnlyTextFormField(_nameController, 'Name', Icons.person),
                         const SizedBox(height: 13),
                         _buildReadOnlyTextFormField(_surnameController, 'Surname', Icons.person_outline),
@@ -170,7 +170,7 @@ class _EditClientScreenState extends State<EditClientScreen> {
                                   fillColor: Colors.grey[900],
                                   contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
                                 ),
-                                dropdownColor: Colors.grey[900], // Set dropdown background color
+                                dropdownColor: Colors.grey[900],
                               );
                             }
                           },
@@ -204,7 +204,7 @@ class _EditClientScreenState extends State<EditClientScreen> {
     return TextFormField(
       controller: controller,
       readOnly: true,
-      style: const TextStyle(color: Colors.white), // Set text color to white
+      style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
         labelText: label,
         prefixIcon: Icon(icon, color: const Color(0xFFE6FE58)),
@@ -227,7 +227,7 @@ class _EditClientScreenState extends State<EditClientScreen> {
       }) {
     return TextFormField(
       controller: controller,
-      style: const TextStyle(color: Colors.white), // Set text color to white
+      style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
         labelText: label,
         prefixIcon: Icon(icon, color: const Color(0xFFE6FE58)),

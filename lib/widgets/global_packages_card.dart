@@ -52,7 +52,7 @@ class _GlobalPackagesCardState extends State<GlobalPackagesCard> {
   Future<void> _onEditButtonPressed() async {
     final updatedPackage = MembershipPackage(
       membershipPackageId: widget.id,
-      name: widget.membershipPackage.name, // Name se ne menja
+      name: widget.membershipPackage.name,
       description: _descriptionController.text,
       price: double.tryParse(_priceController.text) ?? 0.0,
       numberOfMonths: int.tryParse(_monthsController.text) ?? 0,

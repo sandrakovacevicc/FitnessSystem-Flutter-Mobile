@@ -42,7 +42,7 @@ class _QRScannerWidgetState extends State<QRScannerWidget> {
             right: 0,
             child: Container(
               color: Colors.black.withOpacity(0.5),
-              child: Center(
+              child: const Center(
                 child: Text(
                   'Align QR code within the frame',
                   style: TextStyle(color: Colors.white, fontSize: 16),
@@ -59,7 +59,7 @@ class _QRScannerWidgetState extends State<QRScannerWidget> {
     this.controller = controller;
     controller.scannedDataStream.listen((scanData) {
       widget.onQRCodeScanned(scanData.code!);
-      Navigator.of(context).pop(); // Close the scanner screen
+      Navigator.of(context).pop();
     });
   }
 

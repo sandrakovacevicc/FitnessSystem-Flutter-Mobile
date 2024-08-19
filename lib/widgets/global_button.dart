@@ -26,10 +26,10 @@ class GlobalButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: backgroundColor, // Background color
-          foregroundColor: textColor, // Text color
+          backgroundColor: backgroundColor,
+          foregroundColor: textColor,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(borderRadius), // Rounded corners
+            borderRadius: BorderRadius.circular(borderRadius),
           ),
         ),
         child: Text(

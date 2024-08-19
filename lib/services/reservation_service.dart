@@ -47,12 +47,12 @@ class ReservationService {
   Future<List<Reservation>> fetchReservationsByUserId(String jmbg) async {
     try {
       final url = Uri.parse('$baseUrl/reservations/clients/$jmbg');
-      print('Fetching reservations from: $url'); // Debug statement
+      print('Fetching reservations from: $url');
 
       final response = await http.get(url);
 
-      print('Response status: ${response.statusCode}'); // Debug statement
-      print('Response body: ${response.body}'); // Debug statement
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
 
       if (response.statusCode == 200) {
         final List<dynamic> jsonResponse = json.decode(response.body);
@@ -95,7 +95,6 @@ class ReservationService {
     );
 
     if (response.statusCode == 200) {
-      // Uspešno potvrđena rezervacija, ne radimo ništa jer ne očekujemo telo odgovora
       return;
     } else if (response.statusCode == 404) {
       if (response.body.isNotEmpty) {

@@ -33,7 +33,6 @@ class SessionCard extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Row(
           children: [
-            // Image on the left side
             ClipRRect(
               borderRadius: BorderRadius.circular(10.0),
               child: Image.asset(
@@ -44,7 +43,6 @@ class SessionCard extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 10),
-            // Program details on the right side
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

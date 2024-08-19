@@ -10,8 +10,8 @@ class SessionService {
   SessionService({required this.baseUrl});
 
   Future<List<Session>> fetchSessions(String date) async {
+    ///final String url = '$baseUrl/sessions?filterBy=Date&filterValue=$date&sortBy=Time&ascending=true&pageNumber=1&pageSize=10';
     final String url = '$baseUrl/sessions?filterBy=Date&filterValue=$date&sortBy=Time&ascending=true&pageNumber=1&pageSize=10';
-
     final response = await http.get(Uri.parse(url));
 
     print('Request URL: $url');
@@ -92,8 +92,9 @@ class SessionService {
       print(errorMessage);
       throw Exception(errorMessage);
     } else {
-      print('Error Response Body: ${response.body}');
-      throw Exception('Failed to create session');
+      String errorMessage = 'Failed to create session. Status code: ${response.statusCode}. Response body: ${response.body}';
+      print(errorMessage);
+      throw Exception(errorMessage);
     }
   }
 

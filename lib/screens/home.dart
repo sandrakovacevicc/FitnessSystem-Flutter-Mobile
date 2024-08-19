@@ -25,7 +25,7 @@ class _HomeState extends State<Home> {
           padding: const EdgeInsets.all(35.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.start, // Aligns children at the bottom
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
                 "NO MORE EXCUSES |",
@@ -38,8 +38,8 @@ class _HomeState extends State<Home> {
               const SizedBox(height: 5),
               Container(
                 decoration: BoxDecoration(
-                  color: const Color(0xFFE6FE58), // Background color
-                  borderRadius: BorderRadius.circular(12), // Rounded corners
+                  color: const Color(0xFFE6FE58),
+                  borderRadius: BorderRadius.circular(12),
                 ),
                 padding: const EdgeInsets.all(5.0),
                 child: const Text(
@@ -51,7 +51,7 @@ class _HomeState extends State<Home> {
                   ),
                 ),
               ),
-              const SizedBox(height: 20), // Space below the text
+              const SizedBox(height: 20),
               const Text(
                 "Achieve your fitness goals with our expert trainers! Join us for personalized workouts that get results!",
                 style: TextStyle(
@@ -63,12 +63,12 @@ class _HomeState extends State<Home> {
               const SizedBox(height: 20),
               Container(
                 decoration: BoxDecoration(
-                  color: const Color(0xFFD9D9D9).withOpacity(0.10), // Background color
-                  borderRadius: BorderRadius.circular(20), // Rounded corners
+                  color: const Color(0xFFD9D9D9).withOpacity(0.10),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 padding: const EdgeInsets.all(10.0),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Center the buttons
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     GlobalButton(
                       text: 'Log In',

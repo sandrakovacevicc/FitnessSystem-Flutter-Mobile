@@ -19,7 +19,8 @@ class Sessions extends StatefulWidget {
 }
 
 class _SessionsState extends State<Sessions> {
-  final String baseUrl = 'https://192.168.1.79:7083/api';
+  //final String baseUrl = 'https://192.168.1.79:7083/api';
+  final String baseUrl = 'https://10.0.2.2:7083/api';
   late Future<List<Room>> _rooms;
   late Future<List<User>> _trainers;
   late Future<List<TrainingProgram>> _programs;
@@ -410,18 +411,15 @@ class _SessionsState extends State<Sessions> {
         const SnackBar(content: Text('Session created successfully')),
       );
     } catch (e) {
-      if (e.toString().contains('409')) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Trainer is already booked at this time')),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Failed to create session')),
-        );
+      String errorMessage = 'Failed to create session. Please try again later.';
+      if (e.toString().contains('The selected trainer is already booked for this time slot')) {
+        errorMessage = 'The selected trainer is already booked for this time slot. Please choose a different time or trainer.';
       }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(errorMessage)),
+      );
     }
   }
-
 
 
 

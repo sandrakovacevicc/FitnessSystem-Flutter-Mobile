@@ -46,7 +46,6 @@ class _TrainersState extends State<Trainers> {
                 final trainer = nonNullPackages[index];
                 return GlobalTrainerCard(
                   user: trainer,
-                  jmbg: trainer.jmbg,
                 );
               },
             );

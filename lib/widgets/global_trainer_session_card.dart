@@ -8,7 +8,7 @@ class TrainerSessionCard extends StatelessWidget {
   final String trainerName;
   final int capacity;
   final String status;
-  final String roomName; // Optional, for indicating status if needed
+  final String roomName;
 
   const TrainerSessionCard({
     super.key,
@@ -17,11 +17,11 @@ class TrainerSessionCard extends StatelessWidget {
     required this.trainingTime,
     required this.trainerName,
     required this.capacity,
-    this.status = '', // Default to empty string if not needed
+    this.status = '',
     required this.roomName,
   });
 
-  // Helper method to convert TimeOfDay to a string
+
   String _formatTimeOfDay(TimeOfDay timeOfDay) {
     final now = DateTime.now();
     final time = DateTime(now.year, now.month, now.day, timeOfDay.hour, timeOfDay.minute);
@@ -57,7 +57,7 @@ class TrainerSessionCard extends StatelessWidget {
               // Training Program Name with Icon
               Row(
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.fitness_center,
                     color: Color(0xFFE6FE58),
                     size: 24,
@@ -77,7 +77,6 @@ class TrainerSessionCard extends StatelessWidget {
               ),
               const SizedBox(height: 12),
 
-              // Training Date and Time
               Text(
                 '${DateFormat('d MMM yyyy').format(trainingDate)} - ${_formatTimeOfDay(trainingTime)}h',
                 style: const TextStyle(
@@ -87,10 +86,10 @@ class TrainerSessionCard extends StatelessWidget {
               ),
               const SizedBox(height: 8),
 
-              // Trainer Name with Icon
+
               Row(
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.person,
                     color: Colors.white70,
                     size: 20,
@@ -109,10 +108,10 @@ class TrainerSessionCard extends StatelessWidget {
               ),
               const SizedBox(height: 8),
 
-              // Room Information with Icon
+
               Row(
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.room,
                     color: Colors.white70,
                     size: 20,
@@ -131,7 +130,7 @@ class TrainerSessionCard extends StatelessWidget {
               ),
               const SizedBox(height: 12),
 
-              // Capacity Information
+
               Text(
                 'Spaces Left: $capacity',
                 style: const TextStyle(
@@ -142,7 +141,7 @@ class TrainerSessionCard extends StatelessWidget {
               ),
               const SizedBox(height: 8),
 
-              // Optional Status Information
+
               if (status.isNotEmpty)
                 Text(
                   'Status: $status',

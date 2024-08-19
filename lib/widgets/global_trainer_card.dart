@@ -4,12 +4,10 @@ import 'package:fytness_system/services/auth_service.dart';
 
 class GlobalTrainerCard extends StatefulWidget {
   final User user;
-  final String jmbg;
 
   const GlobalTrainerCard({
     super.key,
     required this.user,
-    required this.jmbg,
   });
 
   @override
@@ -50,7 +48,6 @@ class _GlobalTrainerCardState extends State<GlobalTrainerCard> {
       'Nikola': 'assets/nikola.jpg',
       'Milica': 'assets/milica.jpg',
       'Zika': 'assets/zika.jpg',
-      'Marko': 'assets/marko.jpg',
     }[trainerName] ?? 'assets/default_trainer.jpg';
   }
 
@@ -97,7 +94,7 @@ class _GlobalTrainerCardState extends State<GlobalTrainerCard> {
             ),
             child: Image.asset(
               imageUrl,
-              height: 200, // Increased image height
+              height: 200,
               width: double.infinity,
               fit: BoxFit.cover,
             ),
@@ -151,10 +148,10 @@ class _GlobalTrainerCardState extends State<GlobalTrainerCard> {
                       color: Colors.black,
                     ),
                     decoration: const InputDecoration(
-                      labelText: 'Jmbg',
+                      labelText: 'JMBG',
                       border: InputBorder.none,
                     ),
-
+                    readOnly: true,
                   ),
                   const SizedBox(height: 10),
                   TextFormField(
@@ -199,7 +196,7 @@ class _GlobalTrainerCardState extends State<GlobalTrainerCard> {
                   ElevatedButton(
                     onPressed: _onEditButtonPressed,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFFE6FE58), // Background color
+                      backgroundColor: const Color(0xFFE6FE58),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15.0),
                       ),

@@ -96,6 +96,16 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 
+  String getTrainerImage(String trainerName) {
+    return {
+      'Sandra': 'assets/sandra.jpg',
+      'Nikola': 'assets/nikola.jpg',
+      'Milica': 'assets/milica.jpg',
+      'Zika': 'assets/zika.jpg',
+    }[trainerName] ?? 'assets/default_trainer.jpg';
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserProvider>(context).user;
@@ -210,10 +220,10 @@ class _MainScreenState extends State<MainScreen> {
                         child: ListView(
                           scrollDirection: Axis.horizontal,
                           children: [
-                            _trainerAvatar('https://nationalpti.org/wp-content/uploads/2014/02/Personal-Trainer.jpg', 'Zika Zikic'),
-                            _trainerAvatar('https://media.istockphoto.com/id/675179390/photo/muscular-trainer-writing-on-clipboard.jpg?s=612x612&w=0&k=20&c=9NKx1AwVMpPY0YBlk5H-hxx2vJSCu1Wc78BKRM9wFq0=', 'Pera Peric'),
-                            _trainerAvatar('https://www.shutterstock.com/image-photo/portrait-female-personal-trainer-holding-260nw-2249557387.jpg', 'Sandra Kovacevic'),
-                            _trainerAvatar('https://media.cnn.com/api/v1/images/stellar/prod/mary-wing-credit-future-research-inc.jpg?c=16x9&q=h_833,w_1480,c_fill', 'Dunja Nesic'),
+                            _trainerAvatar('Zika'),
+                            _trainerAvatar('Sandra'),
+                            _trainerAvatar('Nikola'),
+                            _trainerAvatar('Milica'),
                           ],
                         ),
                       ),
@@ -232,14 +242,14 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  Widget _trainerAvatar(String imageUrl, String name) {
+  Widget _trainerAvatar(String name) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
         children: [
           CircleAvatar(
             radius: 50,
-            backgroundImage: NetworkImage(imageUrl),
+            backgroundImage: AssetImage(getTrainerImage(name)),
           ),
           const SizedBox(height: 8),
           Text(name, style: const TextStyle(fontSize: 16)),

@@ -19,8 +19,10 @@ class SessionDetailPage extends StatefulWidget {
 
 class _SessionDetailPageState extends State<SessionDetailPage> {
   late Future<Session> _session;
-  final SessionService _sessionService = SessionService(baseUrl: 'https://192.168.1.79:7083/api');
-  final ReservationService _reservationService = ReservationService(baseUrl: 'https://192.168.1.79:7083/api');
+  //final SessionService _sessionService = SessionService(baseUrl: 'https://192.168.1.79:7083/api');
+  //final ReservationService _reservationService = ReservationService(baseUrl: 'https://192.168.1.79:7083/api');
+  final SessionService _sessionService = SessionService(baseUrl: 'https://10.0.2.2:7083/api');
+  final ReservationService _reservationService = ReservationService(baseUrl: 'https://10.0.2.2:7083/api');
 
   @override
   void initState() {
@@ -415,11 +417,11 @@ class _SessionDetailPageState extends State<SessionDetailPage> {
 
   String getProgramImage(String programName) {
     return {
-      'HIIT': 'assets/hiit.jpg',
-      'Yoga': 'assets/yoga.jpg',
-      'Pilates': 'assets/pilates.jpg',
-      'Crossfit': 'assets/crossfit.jpg',
-      'Spinning': 'assets/spinning.jpg',
+      'HIIT': 'assets/hiit_1.png',
+      'Yoga': 'assets/yoga_1.png',
+      'Pilates': 'assets/pilates_1.png',
+      'Crossfit': 'assets/crossfit_1.png',
+      'Spinning': 'assets/spinning_1.png',
     }[programName] ?? 'assets/default_program.jpg';
   }
 
@@ -429,7 +431,6 @@ class _SessionDetailPageState extends State<SessionDetailPage> {
       'Nikola': 'assets/nikola.jpg',
       'Milica': 'assets/milica.jpg',
       'Zika': 'assets/zika.jpg',
-      'Marko': 'assets/marko.jpg',
     }[trainerName] ?? 'assets/default_trainer.jpg';
   }
 

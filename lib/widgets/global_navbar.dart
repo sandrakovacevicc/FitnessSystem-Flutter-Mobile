@@ -32,7 +32,7 @@ class _NavBarState extends State<NavBar> {
       ),
       actions: [
         IconButton(
-          icon: Icon(Icons.logout, color: Colors.white),
+          icon: const Icon(Icons.logout, color: Colors.white),
           onPressed: () {
             Provider.of<UserProvider>(context, listen: false).logout();
             Navigator.pushReplacementNamed(context, 'login/');

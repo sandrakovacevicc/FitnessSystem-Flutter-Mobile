@@ -61,10 +61,10 @@ class _GlobalProgramCardState extends State<GlobalProgramCard> {
 
     final updatedProgram = TrainingProgram(
       trainingProgramId: widget.id,
-      name: widget.trainingProgram.name, // Ne menjamo ime
+      name: widget.trainingProgram.name,
       description: _descriptionController.text,
       trainingDurationInMinutes: int.tryParse(_trainingDurationInMinutesController.text) ?? 0,
-      trainingType: widget.trainingProgram.trainingType, // Ne menjamo tip treninga
+      trainingType: widget.trainingProgram.trainingType,
     );
 
     try {

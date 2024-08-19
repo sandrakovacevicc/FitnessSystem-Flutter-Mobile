@@ -84,7 +84,7 @@ class _TrainingsState extends State<Trainings> {
         selectedIndex++;
         _scrollController.animateTo(selectedIndex * 60.0,
             duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
-        _fetchSessions(); // Fetch sessions for the new selected date
+        _fetchSessions();
       }
     });
   }
@@ -94,7 +94,9 @@ class _TrainingsState extends State<Trainings> {
     String selectedDate = DateFormat('2024-MM-dd').format(parsedDate);
 
     setState(() {
-      _sessions = SessionService(baseUrl: 'https://192.168.1.79:7083/api')
+      //_sessions = SessionService(baseUrl: 'https://192.168.1.79:7083/api')
+         // .fetchSessions(selectedDate);
+      _sessions = SessionService(baseUrl: 'https://10.0.2.2:7083/api')
           .fetchSessions(selectedDate);
     });
   }

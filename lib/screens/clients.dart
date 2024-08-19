@@ -20,10 +20,10 @@ class _ClientsState extends State<Clients> {
   @override
   void initState() {
     super.initState();
-    _loadClients(); // Initial load
+    _loadClients();
 
     searchController.addListener(() {
-      _loadClients(); // Load clients when text changes
+      _loadClients();
     });
   }
 
@@ -105,7 +105,7 @@ class _ClientsState extends State<Clients> {
                                 ),
                               );
                               if (result != null) {
-                                _loadClients(); // Refresh clients list if needed
+                                _loadClients();
                               }
                             },
                             child: GlobalClientCard(user: clients[index]),

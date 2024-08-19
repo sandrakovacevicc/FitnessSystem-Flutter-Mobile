@@ -162,7 +162,7 @@ class ReservationCard extends StatelessWidget {
             top: 8,
             right: 48,
             child: IconButton(
-              icon: const Icon(Icons.camera_alt, color: Colors.white), // Kamera ikona
+              icon: const Icon(Icons.camera_alt, color: Colors.white),
               onPressed: onCamera,
             ),
           ),

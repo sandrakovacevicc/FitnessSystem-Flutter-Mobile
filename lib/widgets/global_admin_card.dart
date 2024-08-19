@@ -29,7 +29,6 @@ class GlobalGridItem extends StatelessWidget {
         ),
         child: Stack(
           children: [
-            // Background image with opacity
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16),
