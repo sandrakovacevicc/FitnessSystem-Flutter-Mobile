@@ -19,10 +19,10 @@ class SessionDetailPage extends StatefulWidget {
 
 class _SessionDetailPageState extends State<SessionDetailPage> {
   late Future<Session> _session;
-  //final SessionService _sessionService = SessionService(baseUrl: 'https://192.168.1.79:7083/api');
-  //final ReservationService _reservationService = ReservationService(baseUrl: 'https://192.168.1.79:7083/api');
-  final SessionService _sessionService = SessionService(baseUrl: 'https://10.0.2.2:7083/api');
-  final ReservationService _reservationService = ReservationService(baseUrl: 'https://10.0.2.2:7083/api');
+  final SessionService _sessionService = SessionService(baseUrl: 'https://192.168.1.10:7083/api');
+  final ReservationService _reservationService = ReservationService(baseUrl: 'https://192.168.1.10:7083/api');
+  //final SessionService _sessionService = SessionService(baseUrl: 'https://10.0.2.2:7083/api');
+  //final ReservationService _reservationService = ReservationService(baseUrl: 'https://10.0.2.2:7083/api');
 
   @override
   void initState() {
@@ -88,25 +88,35 @@ class _SessionDetailPageState extends State<SessionDetailPage> {
   void _bookNow(Session session) async {
     final now = DateTime.now();
     final currentDate = DateTime(now.year, now.month, now.day);
-    final currentTime = TimeOfDay.now();
+    final currentTimeInMinutes = now.hour * 60 + now.minute;
 
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
-    final clientJMBG = userProvider.user?.jmbg ?? '';
+    final sessionDateTime = DateTime(
+      session.date.year,
+      session.date.month,
+      session.date.day,
+    );
 
-    if (currentDate.isAfter(session.date)) {
+    final sessionTimeInMinutes = session.time.hour * 60 + session.time.minute;
+
+
+    if (currentDate.isAfter(sessionDateTime)) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Reservation date cannot be in the past!')),
+        const SnackBar(content: Text('Reservation date and time cannot be in the past!')),
       );
       return;
     }
 
-    if (currentDate.isAfter(session.date) ||
-        (currentDate.isAtSameMomentAs(session.date) && session.time.hour * 60 + session.time.minute < currentTime.hour * 60 + currentTime.minute)) {
+    if (currentDate.isAtSameMomentAs(sessionDateTime) &&
+        currentTimeInMinutes >= sessionTimeInMinutes) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Reservation time cannot be after the session time!')),
       );
       return;
     }
+
+
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final clientJMBG = userProvider.user?.jmbg ?? '';
 
     if (clientJMBG.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -132,7 +142,7 @@ class _SessionDetailPageState extends State<SessionDetailPage> {
         clientJMBG: clientJMBG,
         sessionId: session.sessionId,
         date: currentDate,
-        time: DateFormat('HH:mm:ss').format(DateTime(0, 0, 0, currentTime.hour, currentTime.minute)),
+        time: DateFormat('HH:mm:ss').format(DateTime(0, 0, 0, now.hour, now.minute)),
         status: "reserved",
       );
 
@@ -154,7 +164,6 @@ class _SessionDetailPageState extends State<SessionDetailPage> {
       );
     }
   }
-
 
 
 

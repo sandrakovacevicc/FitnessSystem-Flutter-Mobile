@@ -27,6 +27,9 @@ class ReservationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final trainingTimeFormatted = _formatTime(trainingTime);
+    final reservationTimeFormatted = _formatTime(time);
+
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
       elevation: 8,
@@ -36,7 +39,6 @@ class ReservationCard extends StatelessWidget {
       color: Colors.black.withOpacity(0.9),
       child: Stack(
         children: [
-          // Card Content
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
@@ -54,7 +56,6 @@ class ReservationCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-
                   Row(
                     children: [
                       const Icon(
@@ -76,8 +77,6 @@ class ReservationCard extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 12),
-
-
                   Row(
                     children: [
                       const Icon(
@@ -88,7 +87,7 @@ class ReservationCard extends StatelessWidget {
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
-                          '${DateFormat('d MMM yyyy').format(trainingDate)} - ${trainingTime}h',
+                          '${DateFormat('d MMM yyyy').format(trainingDate)} - $trainingTimeFormatted',
                           style: const TextStyle(
                             fontSize: 16,
                             color: Colors.white,
@@ -98,8 +97,6 @@ class ReservationCard extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 8),
-
-
                   Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
@@ -136,7 +133,7 @@ class ReservationCard extends StatelessWidget {
                         _buildInfoRow(
                           icon: Icons.access_time,
                           label: 'Reservation Time:',
-                          value: time,
+                          value: reservationTimeFormatted,
                         ),
                         const SizedBox(height: 8),
                         Text(
@@ -156,8 +153,6 @@ class ReservationCard extends StatelessWidget {
               ),
             ),
           ),
-
-          // Delete Button
           Positioned(
             top: 8,
             right: 48,
@@ -166,8 +161,6 @@ class ReservationCard extends StatelessWidget {
               onPressed: onCamera,
             ),
           ),
-
-          // Delete Button
           Positioned(
             top: 8,
             right: 8,
@@ -181,8 +174,19 @@ class ReservationCard extends StatelessWidget {
     );
   }
 
-  Widget _buildInfoRow(
-      {required IconData icon, required String label, required String value}) {
+  String _formatTime(String time) {
+    if (time.length == 8) {
+      return DateFormat.Hm().format(DateFormat("HH:mm:ss").parse(time));
+    } else {
+      return time;
+    }
+  }
+
+  Widget _buildInfoRow({
+    required IconData icon,
+    required String label,
+    required String value,
+  }) {
     return Row(
       children: [
         Icon(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:fytness_system/providers/user_provider.dart';
 import 'package:fytness_system/screens/qr_scanner.dart';
 import 'package:fytness_system/services/reservation_service.dart';
@@ -10,7 +11,6 @@ import 'package:fytness_system/widgets/global_menu.dart';
 import 'package:fytness_system/widgets/global_navbar.dart';
 import 'package:fytness_system/widgets/global_reservation_card.dart';
 import 'package:fytness_system/widgets/global_trainer_session_card.dart';
-import 'package:provider/provider.dart';
 
 class Reservations extends StatefulWidget {
   const Reservations({super.key});
@@ -21,37 +21,26 @@ class Reservations extends StatefulWidget {
 
 class _ReservationsState extends State<Reservations> {
   int selectedIndex = 2;
-  //final ReservationService _reservationService =
-  //ReservationService(baseUrl: 'https://192.168.1.79:7083/api');
-  //final SessionService _sessionService =
-  //SessionService(baseUrl: 'https://192.168.1.79:7083/api/sessions');
-  final ReservationService _reservationService =
-  ReservationService(baseUrl: 'https://10.0.2.2:7083/api');
-  final SessionService _sessionService =
-  SessionService(baseUrl: 'https://10.0.2.2:7083/api/sessions');
+  final ReservationService _reservationService = ReservationService(baseUrl: 'https://192.168.1.10:7083/api');
+  final SessionService _sessionService = SessionService(baseUrl: 'https://192.168.1.10:7083/api/sessions');
 
   @override
-  void initState() {
-    super.initState();
-    final user = Provider.of<UserProvider>(context, listen: false).user;
-    if (user != null) {
-      final userRole = user.role;
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
-      if (userRole == 'Client') {
-      } else if (userRole == 'Trainer') {
-      } else {
-      }
-    } else {
-    }
+
+    precacheImage(AssetImage('assets/clients.jpg'), context);
+    precacheImage(AssetImage('assets/trainers.jpg'), context);
+    precacheImage(AssetImage('assets/training_programs.jpg'), context);
+    precacheImage(AssetImage('assets/membership_packages.jpg'), context);
+    precacheImage(AssetImage('assets/sessions.jpg'), context);
+    precacheImage(AssetImage('assets/rooms.jpg'), context);
   }
 
   void _deleteReservation(int reservationId) async {
     try {
       await _reservationService.deleteReservation(reservationId);
-
-      setState(() {
-      });
-
+      setState(() {});
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Reservation successfully deleted'),
@@ -69,16 +58,13 @@ class _ReservationsState extends State<Reservations> {
       context,
       MaterialPageRoute(builder: (context) => QRScannerScreen()),
     );
-
     print('Scanned QR code: $result');
   }
-
 
   void _onItemTapped(int index) {
     setState(() {
       selectedIndex = index;
     });
-
     switch (index) {
       case 0:
         Navigator.pushReplacementNamed(context, 'mainScreen/');
@@ -113,7 +99,7 @@ class _ReservationsState extends State<Reservations> {
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return const Center(child: Text("You don't have any reservations", style: TextStyle(color: Color(0xFFE6FE58), fontWeight: FontWeight.bold, fontSize: 24 ),));
+                  return const Center(child: Text("You don't have any reservations", style: TextStyle(color: Color(0xFFE6FE58), fontWeight: FontWeight.bold, fontSize: 24),));
                 } else {
                   final data = snapshot.data!;
                   return Padding(
@@ -175,7 +161,7 @@ class _ReservationsState extends State<Reservations> {
             final List<String> titles = [
               'Clients',
               'Trainers',
-              'Training Programs',
+              ' Training Programs',
               'Membership Packages',
               'Sessions',
               'Rooms',
@@ -248,6 +234,4 @@ class _ReservationsState extends State<Reservations> {
       ),
     );
   }
-
-
 }

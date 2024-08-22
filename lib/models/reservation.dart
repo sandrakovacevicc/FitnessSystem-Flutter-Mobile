@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class Reservation {
   final int reservationId;
   final DateTime date;
@@ -25,10 +27,13 @@ class Reservation {
     final session = json['session'] ?? {};
     final trainingProgram = session['trainingProgram'] ?? {};
 
+    final parsedTime = DateFormat.Hm().parse(json['time'] ?? '00:00');
+    final formattedTime = DateFormat('HH:mm').format(parsedTime);
+
     return Reservation(
       reservationId: json['reservationId'] ?? 0,
       date: DateTime.parse(json['date']),
-      time: json['time'] ?? '',
+      time: formattedTime,
       clientJMBG: json['client']['jmbg'] ?? '',
       sessionId: session['sessionId'] ?? 0,
       status: json['status'] ?? '',

@@ -14,8 +14,8 @@ class QRScannerScreen extends StatefulWidget {
 class _QRScannerScreenState extends State<QRScannerScreen> {
   final GlobalKey _qrKey = GlobalKey();
   QRViewController? _qrController;
-  //final ReservationService _reservationService = ReservationService(baseUrl: 'https://192.168.1.79:7083/api');
-  final ReservationService _reservationService = ReservationService(baseUrl: 'https://10.0.2.2:7083/api');
+  final ReservationService _reservationService = ReservationService(baseUrl: 'https://192.168.1.10:7083/api');
+  //final ReservationService _reservationService = ReservationService(baseUrl: 'https://10.0.2.2:7083/api');
 
   @override
   void reassemble() {

@@ -25,6 +25,15 @@ class _MainScreenState extends State<MainScreen> {
     _loadJwtToken();
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    precacheImage(AssetImage('assets/sandra.jpg'), context);
+    precacheImage(AssetImage('assets/nikola.jpg'), context);
+    precacheImage(AssetImage('assets/milica.jpg'), context);
+    precacheImage(AssetImage('assets/zika.jpg'), context);
+  }
+
   Future<void> _loadJwtToken() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -104,7 +113,6 @@ class _MainScreenState extends State<MainScreen> {
       'Zika Zikic': 'assets/zika.jpg',
     }[trainerName] ?? 'assets/default_trainer.jpg';
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -228,6 +236,7 @@ class _MainScreenState extends State<MainScreen> {
                         ),
                       ),
                     ),
+                    const SizedBox(height: 20)
                   ],
                 ),
               ),

@@ -19,8 +19,8 @@ class Sessions extends StatefulWidget {
 }
 
 class _SessionsState extends State<Sessions> {
-  //final String baseUrl = 'https://192.168.1.79:7083/api';
-  final String baseUrl = 'https://10.0.2.2:7083/api';
+  final String baseUrl = 'https://192.168.1.10:7083/api';
+  //final String baseUrl = 'https://10.0.2.2:7083/api';
   late Future<List<Room>> _rooms;
   late Future<List<User>> _trainers;
   late Future<List<TrainingProgram>> _programs;
@@ -392,8 +392,9 @@ class _SessionsState extends State<Sessions> {
     }
 
     try {
-      String formattedMinute = _selectedTime!.minute.toString().padLeft(2, '0');
-      final String timeFormatted = '${_selectedTime!.hour}:$formattedMinute:00';
+      final String formattedHour = _selectedTime!.hour.toString().padLeft(2, '0');
+      final String formattedMinute = _selectedTime!.minute.toString().padLeft(2, '0');
+      final String timeFormatted = '$formattedHour:$formattedMinute:00';
 
       final SessionAddDto sessionDto = SessionAddDto(
         trainerJMBG: _selectedTrainerJMBG,

@@ -186,7 +186,7 @@ class _GlobalProgramCardState extends State<GlobalProgramCard> {
                     ElevatedButton(
                       onPressed: _onEditButtonPressed,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFE6FE58), // Background color
+                        backgroundColor: const Color(0xFFE6FE58),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15.0),
                         ),

@@ -142,7 +142,7 @@ class _GlobalPackagesCardState extends State<GlobalPackagesCard> {
                             const Icon(Icons.payment, color: Colors.black, size: 18),
                             const SizedBox(width: 6),
                             SizedBox(
-                              width: 90,
+                              width: 95,
                               child: TextField(
                                 controller: _priceController,
                                 keyboardType: TextInputType.number,
@@ -164,7 +164,7 @@ class _GlobalPackagesCardState extends State<GlobalPackagesCard> {
                             const Icon(Icons.access_time, color: Colors.black, size: 18),
                             const SizedBox(width: 2),
                             SizedBox(
-                              width: 70,
+                              width: 80,
                               child: TextField(
                                 controller: _monthsController,
                                 keyboardType: TextInputType.number,

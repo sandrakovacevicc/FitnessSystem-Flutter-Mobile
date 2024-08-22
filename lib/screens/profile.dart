@@ -97,7 +97,7 @@ class _ProfileState extends State<Profile> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       extendBody: true,
-      appBar: const NavBar(automaticallyImplyLeading: true),
+      appBar: const NavBar(automaticallyImplyLeading: false),
       body: Stack(
         children: [
           Positioned.fill(
@@ -106,8 +106,13 @@ class _ProfileState extends State<Profile> {
               fit: BoxFit.cover,
             ),
           ),
-          Center(
+          Align(
+            alignment: Alignment.topCenter,
             child: SingleChildScrollView(
+              padding: const EdgeInsets.only(
+                top: kToolbarHeight + 50,
+                bottom: kBottomNavigationBarHeight + 30,
+              ),
               child: Consumer<UserProvider>(
                 builder: (context, userProvider, child) {
                   final user = userProvider.user;
@@ -118,6 +123,7 @@ class _ProfileState extends State<Profile> {
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      const SizedBox(height: 20),
                       const Stack(
                         children: [
                           CircleAvatar(
@@ -283,6 +289,7 @@ class _ProfileState extends State<Profile> {
       ),
     );
   }
+
 
   Widget _buildProfileField({
     required IconData icon,

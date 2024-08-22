@@ -37,8 +37,14 @@ class _EditClientScreenState extends State<EditClientScreen> {
     _mobileNumberController = TextEditingController(text: widget.user.mobileNumber);
 
     futureMembershipPackages = MembershipPackageService().fetchMembershipPackages();
-
     _loadSelectedPackage();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Preload the background image
+    precacheImage(const AssetImage('assets/pro.png'), context);
   }
 
   Future<void> _loadSelectedPackage() async {
@@ -101,94 +107,105 @@ class _EditClientScreenState extends State<EditClientScreen> {
       body: Stack(
         children: [
           Positioned.fill(
-            child: Container(
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('assets/pro.png'),
-                  fit: BoxFit.cover,
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                Container(
+                  color: Colors.black,
                 ),
-              ),
+                Image.asset(
+                  'assets/pro.png',
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      color: Colors.black,
+                    );
+                  },
+                ),
+              ],
             ),
           ),
           Align(
             alignment: Alignment.center,
             child: Padding(
               padding: const EdgeInsets.all(16.0),
-              child: SingleChildScrollView(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.7),
-                    borderRadius: BorderRadius.circular(12.0),
-                  ),
-                  padding: const EdgeInsets.all(18.0),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 20),
-                        _buildReadOnlyTextFormField(_nameController, 'Name', Icons.person),
-                        const SizedBox(height: 13),
-                        _buildReadOnlyTextFormField(_surnameController, 'Surname', Icons.person_outline),
-                        const SizedBox(height: 13),
-                        _buildReadOnlyTextFormField(_jmbgController, 'JMBG', Icons.contact_mail),
-                        const SizedBox(height: 13),
-                        _buildReadOnlyTextFormField(_birthdateController, 'Birthdate', Icons.calendar_today),
-                        const SizedBox(height: 13),
-                        _buildTextFormField(_emailController, 'Email', Icons.email, validateEmail: true),
-                        const SizedBox(height: 13),
-                        _buildTextFormField(_mobileNumberController, 'Mobile Number', Icons.phone),
-                        const SizedBox(height: 13),
-                        FutureBuilder<List<MembershipPackage>>(
-                          future: futureMembershipPackages,
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState == ConnectionState.waiting) {
-                              return const Center(child: CircularProgressIndicator());
-                            } else if (snapshot.hasError) {
-                              return Center(child: Text('Error: ${snapshot.error}'));
-                            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                              return const Center(child: Text('No packages available.'));
-                            } else {
-                              final packages = snapshot.data!;
-                              return DropdownButtonFormField<MembershipPackage>(
-                                value: selectedPackage,
-                                onChanged: (MembershipPackage? newValue) {
-                                  setState(() {
-                                    selectedPackage = newValue;
-                                  });
-                                },
-                                items: packages.map<DropdownMenuItem<MembershipPackage>>((MembershipPackage package) {
-                                  return DropdownMenuItem<MembershipPackage>(
-                                    value: package,
-                                    child: Text(package.name, style: const TextStyle(color: Color(0xFFE6FE58))),
-                                  );
-                                }).toList(),
-                                decoration: InputDecoration(
-                                  labelText: 'Membership Package',
-                                  labelStyle: const TextStyle(color: Colors.white),
-                                  filled: true,
-                                  fillColor: Colors.grey[900],
-                                  contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                                ),
-                                dropdownColor: Colors.grey[900],
-                              );
-                            }
-                          },
-                        ),
-                        const SizedBox(height: 20),
-                        Center(
-                          child: ElevatedButton(
-                            onPressed: _saveClient,
-                            style: ElevatedButton.styleFrom(
-                              foregroundColor: Colors.black,
-                              backgroundColor: const Color(0xFFE6FE58),
-                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                              textStyle: const TextStyle(fontSize: 16),
-                            ),
-                            child: const Text('Save Changes', style: TextStyle(fontWeight: FontWeight.bold)),
+              child: SafeArea(
+                child: SingleChildScrollView(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.7),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    padding: const EdgeInsets.all(18.0),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 20),
+                          _buildReadOnlyTextFormField(_nameController, 'Name', Icons.person),
+                          const SizedBox(height: 13),
+                          _buildReadOnlyTextFormField(_surnameController, 'Surname', Icons.person_outline),
+                          const SizedBox(height: 13),
+                          _buildReadOnlyTextFormField(_jmbgController, 'JMBG', Icons.contact_mail),
+                          const SizedBox(height: 13),
+                          _buildReadOnlyTextFormField(_birthdateController, 'Birthdate', Icons.calendar_today),
+                          const SizedBox(height: 13),
+                          _buildTextFormField(_emailController, 'Email', Icons.email, validateEmail: true),
+                          const SizedBox(height: 13),
+                          _buildTextFormField(_mobileNumberController, 'Mobile Number', Icons.phone),
+                          const SizedBox(height: 13),
+                          FutureBuilder<List<MembershipPackage>>(
+                            future: futureMembershipPackages,
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState == ConnectionState.waiting) {
+                                return const Center(child: CircularProgressIndicator());
+                              } else if (snapshot.hasError) {
+                                return Center(child: Text('Error: ${snapshot.error}'));
+                              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                                return const Center(child: Text('No packages available.'));
+                              } else {
+                                final packages = snapshot.data!;
+                                return DropdownButtonFormField<MembershipPackage>(
+                                  value: selectedPackage,
+                                  onChanged: (MembershipPackage? newValue) {
+                                    setState(() {
+                                      selectedPackage = newValue;
+                                    });
+                                  },
+                                  items: packages.map<DropdownMenuItem<MembershipPackage>>((MembershipPackage package) {
+                                    return DropdownMenuItem<MembershipPackage>(
+                                      value: package,
+                                      child: Text(package.name, style: const TextStyle(color: Color(0xFFE6FE58))),
+                                    );
+                                  }).toList(),
+                                  decoration: InputDecoration(
+                                    labelText: 'Membership Package',
+                                    labelStyle: const TextStyle(color: Colors.white),
+                                    filled: true,
+                                    fillColor: Colors.grey[900],
+                                    contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                                  ),
+                                  dropdownColor: Colors.grey[900],
+                                );
+                              }
+                            },
                           ),
-                        ),
-                      ],
+                          const SizedBox(height: 20),
+                          Center(
+                            child: ElevatedButton(
+                              onPressed: _saveClient,
+                              style: ElevatedButton.styleFrom(
+                                foregroundColor: Colors.black,
+                                backgroundColor: const Color(0xFFE6FE58),
+                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                                textStyle: const TextStyle(fontSize: 16),
+                              ),
+                              child: const Text('Save Changes', style: TextStyle(fontWeight: FontWeight.bold)),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -199,6 +216,8 @@ class _EditClientScreenState extends State<EditClientScreen> {
       ),
     );
   }
+
+
 
   Widget _buildReadOnlyTextFormField(TextEditingController controller, String label, IconData icon) {
     return TextFormField(
@@ -239,18 +258,18 @@ class _EditClientScreenState extends State<EditClientScreen> {
           borderSide: BorderSide.none,
         ),
       ),
-      validator: validateEmail
-          ? (value) {
+      validator: (value) {
         if (value == null || value.isEmpty) {
-          return 'Please enter your email';
+          return 'Please enter $label';
         }
-        final regex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
-        if (!regex.hasMatch(value)) {
-          return 'Please enter a valid email address';
+        if (validateEmail) {
+          final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+$');
+          if (!emailRegex.hasMatch(value)) {
+            return 'Please enter a valid email address';
+          }
         }
         return null;
-      }
-          : null,
+      },
     );
   }
 }

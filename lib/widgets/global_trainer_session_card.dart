@@ -54,7 +54,6 @@ class TrainerSessionCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Training Program Name with Icon
               Row(
                 children: [
                   const Icon(

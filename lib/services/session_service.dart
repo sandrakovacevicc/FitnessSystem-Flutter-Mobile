@@ -10,7 +10,6 @@ class SessionService {
   SessionService({required this.baseUrl});
 
   Future<List<Session>> fetchSessions(String date) async {
-    ///final String url = '$baseUrl/sessions?filterBy=Date&filterValue=$date&sortBy=Time&ascending=true&pageNumber=1&pageSize=10';
     final String url = '$baseUrl/sessions?filterBy=Date&filterValue=$date&sortBy=Time&ascending=true&pageNumber=1&pageSize=10';
     final response = await http.get(Uri.parse(url));
 

@@ -1,27 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:fytness_system/models/session.dart';
 import 'package:fytness_system/screens/training_program.dart';
+import 'package:fytness_system/providers/user_provider.dart';
 
 class SessionCard extends StatelessWidget {
   final Session session;
 
   const SessionCard({super.key, required this.session});
 
-
   String getProgramImage(String programName) {
-    return {
+    const programImages = {
       'HIIT': 'assets/hiit.jpg',
       'Yoga': 'assets/yoga.jpg',
       'Pilates': 'assets/pilates.jpg',
       'Crossfit': 'assets/crossfit.jpg',
       'Spinning': 'assets/spinning.jpg',
+    };
 
-    }[programName] ?? 'assets/default.jpg';
+    return programImages[programName] ?? 'assets/default.jpg';
   }
 
   @override
   Widget build(BuildContext context) {
     String imageUrl = getProgramImage(session.trainingProgramName);
+
+    final userRole = Provider.of<UserProvider>(context).user?.role ?? '';
 
     return Card(
       color: Colors.black,
@@ -33,6 +37,7 @@ class SessionCard extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Row(
           children: [
+            // Image Section
             ClipRRect(
               borderRadius: BorderRadius.circular(10.0),
               child: Image.asset(
@@ -43,6 +48,7 @@ class SessionCard extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 10),
+            // Text Section
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,15 +86,16 @@ class SessionCard extends StatelessWidget {
                 ],
               ),
             ),
+            // Actions Section
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
                   onPressed: () {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                        builder: (context) => SessionDetailPage(sessionId : session.sessionId),
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SessionDetailPage(sessionId: session.sessionId),
                       ),
                     );
                   },
@@ -103,7 +110,9 @@ class SessionCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20.0),
                     ),
                   ),
-                  child: const Text('Book'),
+                  child: Text(
+                    userRole == 'Admin' || userRole == 'Trainer' ? 'Details' : 'Book',
+                  ),
                 ),
                 const SizedBox(height: 8),
                 Text(
