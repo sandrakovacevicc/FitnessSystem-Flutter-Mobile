@@ -2,7 +2,7 @@ class TrainingProgram {
   final int trainingProgramId;
   final String? name;
   final String? description;
-  final int? trainingDurationInMinutes; // Allow null values
+  final int? trainingDurationInMinutes;
   final String? trainingType;
 
   TrainingProgram({

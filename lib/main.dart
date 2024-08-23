@@ -74,7 +74,7 @@ void main() {
                       case 'membership_packages/':
                         return const Packages();
                       default:
-                        return const Home(); // Default route
+                        return const Home();
                     }
                   },
                 );

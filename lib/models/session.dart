@@ -59,7 +59,7 @@ class Session {
     return {
       'sessionId': sessionId,
       'date': date.toIso8601String(),
-      'time': '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}', // TimeOfDay formatted as HH:mm
+      'time': '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}',
       'duration': duration,
       'capacity': capacity,
       'trainer': {
