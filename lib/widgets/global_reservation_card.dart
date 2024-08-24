@@ -87,7 +87,7 @@ class ReservationCard extends StatelessWidget {
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
-                          '${DateFormat('d MMM yyyy').format(trainingDate)} - $trainingTimeFormatted',
+                          '${DateFormat('d MMM yyyy').format(trainingDate)} - ${trainingTimeFormatted}h',
                           style: const TextStyle(
                             fontSize: 16,
                             color: Colors.white,
@@ -133,7 +133,7 @@ class ReservationCard extends StatelessWidget {
                         _buildInfoRow(
                           icon: Icons.access_time,
                           label: 'Reservation Time:',
-                          value: reservationTimeFormatted,
+                          value: '${reservationTimeFormatted}h',
                         ),
                         const SizedBox(height: 8),
                         Text(

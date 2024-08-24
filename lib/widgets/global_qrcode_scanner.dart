@@ -35,6 +35,13 @@ class _QRScannerWidgetState extends State<QRScannerWidget> {
           QRView(
             key: qrKey,
             onQRViewCreated: _onQRViewCreated,
+            overlay: QrScannerOverlayShape(
+              borderColor: Colors.red,
+              borderRadius: 10,
+              borderLength: 30,
+              borderWidth: 10,
+              cutOutSize: MediaQuery.of(context).size.width * 0.8,
+            ),
           ),
           Positioned(
             bottom: 0,
@@ -58,8 +65,10 @@ class _QRScannerWidgetState extends State<QRScannerWidget> {
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
     controller.scannedDataStream.listen((scanData) {
-      widget.onQRCodeScanned(scanData.code!);
-      Navigator.of(context).pop();
+      if (scanData.code != null) {
+        widget.onQRCodeScanned(scanData.code!);
+        Navigator.of(context).pop();
+      }
     });
   }
 

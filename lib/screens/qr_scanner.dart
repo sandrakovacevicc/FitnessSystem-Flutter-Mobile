@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:fytness_system/services/reservation_service.dart';
@@ -12,10 +11,13 @@ class QRScannerScreen extends StatefulWidget {
 }
 
 class _QRScannerScreenState extends State<QRScannerScreen> {
-  final GlobalKey _qrKey = GlobalKey();
+  final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   QRViewController? _qrController;
-  final ReservationService _reservationService = ReservationService(baseUrl: 'https://192.168.1.10:7083/api');
-  //final ReservationService _reservationService = ReservationService(baseUrl: 'https://10.0.2.2:7083/api');
+  final ReservationService _reservationService = ReservationService(
+    baseUrl: 'https://192.168.1.10:7083/api',
+  );
+
+  bool _isProcessing = false;
 
   @override
   void reassemble() {
@@ -30,13 +32,16 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Scan QR Code', style: TextStyle(color: Colors.white),),
+        title: const Text(
+          'Scan QR Code',
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: Colors.black,
       ),
       body: Stack(
         children: [
           QRView(
-            key: _qrKey,
+            key: qrKey,
             onQRViewCreated: _onQRViewCreated,
             overlay: QrScannerOverlayShape(
               borderColor: Colors.red,
@@ -51,7 +56,13 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
     );
   }
 
-  void _simulateQRScan(String code) async {
+  Future<void> _simulateQRScan(String code) async {
+    if (!mounted || _isProcessing) return;
+
+    setState(() {
+      _isProcessing = true;
+    });
+
     final sessionId = int.tryParse(code);
     final userProvider = Provider.of<UserProvider>(context, listen: false);
 
@@ -59,21 +70,23 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
       try {
         await _reservationService.confirmReservation(sessionId, userProvider.user!.jmbg);
 
+        if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Reservation confirmed successfully'),
           ),
         );
 
-
         Navigator.pushReplacementNamed(context, 'reservations/');
 
       } catch (e) {
+        if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Failed to confirm reservation: $e')),
         );
       }
     } else {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Invalid QR code or user not found'),
@@ -81,8 +94,9 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
       );
     }
 
-
-
+    setState(() {
+      _isProcessing = false;
+    });
   }
 
   void _onQRViewCreated(QRViewController controller) {
@@ -90,7 +104,11 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
       _qrController = controller;
     });
     controller.scannedDataStream.listen((scanData) async {
-      _simulateQRScan(scanData.code ?? '');
+      if (scanData.code != null) {
+        _qrController?.pauseCamera();
+        await _simulateQRScan(scanData.code!);
+        _qrController?.resumeCamera();
+      }
     });
   }
 

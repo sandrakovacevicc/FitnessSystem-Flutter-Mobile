@@ -164,7 +164,7 @@ class _GlobalPackagesCardState extends State<GlobalPackagesCard> {
                             const Icon(Icons.access_time, color: Colors.black, size: 18),
                             const SizedBox(width: 2),
                             SizedBox(
-                              width: 80,
+                              width: 78,
                               child: TextField(
                                 controller: _monthsController,
                                 keyboardType: TextInputType.number,
