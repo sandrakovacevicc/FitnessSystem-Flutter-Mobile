@@ -21,8 +21,8 @@ class Reservations extends StatefulWidget {
 
 class _ReservationsState extends State<Reservations> {
   int selectedIndex = 2;
-  final ReservationService _reservationService = ReservationService(baseUrl: 'https://192.168.1.10:7083/api');
-  final SessionService _sessionService = SessionService(baseUrl: 'https://192.168.1.10:7083/api/sessions');
+  final ReservationService _reservationService = ReservationService(baseUrl: 'https://172.20.10.2:7083/api');
+  final SessionService _sessionService = SessionService(baseUrl: 'https://172.20.10.2:7083/api/sessions');
 
   @override
   void didChangeDependencies() {

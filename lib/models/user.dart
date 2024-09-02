@@ -1,5 +1,4 @@
 class User {
-
   final String name;
   final String surname;
   final String email;
@@ -24,8 +23,22 @@ class User {
     this.password,
   });
 
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      name: json['name'] ?? '',
+      surname: json['surname'] ?? '',
+      email: json['email'] ?? '',
+      jmbg: json['jmbg'] ?? '',
+      role: json['role'] ?? '',
+      membershipPackageId: json['membershipPackageId'] != null ? int.tryParse(json['membershipPackageId'].toString()) : null,
+      birthdate: json['birthdate'] != null ? DateTime.tryParse(json['birthdate']) : null,
+      mobileNumber: json['mobileNumber'] != null ? json['mobileNumber'].toString() : null,
+      specialty: json['specialty'] ?? '',
+      password: json['password'] ?? '',
+    );
+  }
+
   User copyWith({
-    String? id,
     String? name,
     String? surname,
     String? email,
@@ -47,7 +60,7 @@ class User {
       birthdate: birthdate ?? this.birthdate,
       mobileNumber: mobileNumber ?? this.mobileNumber,
       specialty: specialty ?? this.specialty,
-      password: password?? this.password,
+      password: password ?? this.password,
     );
   }
 }

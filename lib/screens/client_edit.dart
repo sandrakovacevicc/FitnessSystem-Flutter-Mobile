@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fytness_system/models/membership_package.dart';
-import 'package:fytness_system/screens/clients.dart';
 import 'package:fytness_system/services/auth_service.dart';
 import 'package:fytness_system/services/membership_package_service.dart';
 import 'package:fytness_system/models/user.dart';
@@ -84,11 +83,6 @@ class _EditClientScreenState extends State<EditClientScreen> {
         await AuthService().updateClient(updatedUser);
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('User successfully updated')),
-        );
-
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const Clients()),
         );
       } catch (error) {
         ScaffoldMessenger.of(context).showSnackBar(

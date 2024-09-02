@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fytness_system/models/session.dart';
+import 'package:fytness_system/models/user.dart';
 import 'package:fytness_system/providers/user_provider.dart';
 import 'package:fytness_system/services/session_service.dart';
 import 'package:fytness_system/services/reservation_service.dart';
@@ -19,8 +20,8 @@ class SessionDetailPage extends StatefulWidget {
 
 class _SessionDetailPageState extends State<SessionDetailPage> {
   late Future<Session> _session;
-  final SessionService _sessionService = SessionService(baseUrl: 'https://192.168.1.10:7083/api');
-  final ReservationService _reservationService = ReservationService(baseUrl: 'https://192.168.1.10:7083/api');
+  final SessionService _sessionService = SessionService(baseUrl: 'https://172.20.10.2:7083/api');
+  final ReservationService _reservationService = ReservationService(baseUrl: 'https://172.20.10.2:7083/api');
   //final SessionService _sessionService = SessionService(baseUrl: 'https://10.0.2.2:7083/api');
   //final ReservationService _reservationService = ReservationService(baseUrl: 'https://10.0.2.2:7083/api');
 
@@ -29,6 +30,66 @@ class _SessionDetailPageState extends State<SessionDetailPage> {
     super.initState();
     _session = _sessionService.fetchSessionById(widget.sessionId);
   }
+
+  Future<void> showDetailsPopup(int sessionId) async {
+    final futureClients = _reservationService.fetchConfirmedClientsBySessionId(sessionId);
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: const Color(0xFFE6FE58),
+          title: const Text('Checked-in Clients', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+          content: FutureBuilder<List<User>>(
+            future: futureClients,
+            builder: (BuildContext context, AsyncSnapshot<List<User>> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const CircularProgressIndicator();
+              } else if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                return const Text('No clients have checked in :(', style: TextStyle(color: Colors.black));
+              } else {
+                final clients = snapshot.data!;
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: clients.map((client) => Text('${client.name} ${client.surname}')).toList(),
+                );
+              }
+            },
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Close', style: TextStyle(color: Colors.black)),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  bool isSessionPast(DateTime sessionDate, TimeOfDay sessionTime) {
+    final now = DateTime.now();
+    final currentDate = DateTime(now.year, now.month, now.day);
+    final currentTimeInMinutes = now.hour * 60 + now.minute;
+
+    final sessionDateTime = DateTime(sessionDate.year, sessionDate.month, sessionDate.day);
+    final sessionTimeInMinutes = sessionTime.hour * 60 + sessionTime.minute;
+
+    if (currentDate.isAfter(sessionDateTime)) {
+      return true;
+    }
+
+    if (currentDate.isAtSameMomentAs(sessionDateTime) && currentTimeInMinutes >= sessionTimeInMinutes) {
+      return true;
+    }
+
+    return false;
+  }
+
 
   void _generateQRCode(Session session) async {
     try {
@@ -345,7 +406,30 @@ class _SessionDetailPageState extends State<SessionDetailPage> {
                     ),
                   ),
                 ),
-                if (userRole == 'Trainer')
+                if (isSessionPast(session.date, session.time) && (userRole == 'Trainer' || userRole == 'Admin'))
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    color: Colors.black,
+                    child: Center(
+                      child: ElevatedButton(
+                        onPressed: () => showDetailsPopup(widget.sessionId),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFFE6FE58),
+                          foregroundColor: Colors.black,
+                          padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          textStyle: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        child: const Text('Details'),
+                      ),
+                    ),
+                  ),
+                if (!isSessionPast(session.date, session.time) && userRole == 'Trainer')
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 16.0),
                     color: Colors.black,
@@ -368,7 +452,7 @@ class _SessionDetailPageState extends State<SessionDetailPage> {
                       ),
                     ),
                   ),
-                if (userRole == 'Admin')
+                if (!isSessionPast(session.date, session.time) && userRole == 'Admin')
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 16.0),
                     color: Colors.black,
@@ -387,7 +471,7 @@ class _SessionDetailPageState extends State<SessionDetailPage> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        child: const Text('Delete Session'),
+                        child: const Text('Delete'),
                       ),
                     ),
                   ),
@@ -452,4 +536,3 @@ class _SessionDetailPageState extends State<SessionDetailPage> {
   }
 
 }
-

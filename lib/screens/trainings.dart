@@ -94,7 +94,7 @@ class _TrainingsState extends State<Trainings> {
     String selectedDate = DateFormat('2024-MM-dd').format(parsedDate);
 
     setState(() {
-      _sessions = SessionService(baseUrl: 'https://192.168.1.10:7083/api')
+      _sessions = SessionService(baseUrl: 'https://172.20.10.2:7083/api')
           .fetchSessions(selectedDate);
       //_sessions = SessionService(baseUrl: 'https://10.0.2.2:7083/api')
         //  .fetchSessions(selectedDate);

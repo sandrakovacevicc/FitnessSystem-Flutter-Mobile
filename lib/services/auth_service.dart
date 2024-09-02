@@ -8,7 +8,7 @@ import '../models/dto/login_response_dto.dart';
 
 class AuthService {
   Future<LoginResponseDto?> login(String email, String password) async {
-    final url = Uri.parse('https://192.168.1.10:7083/api/auth/login');
+    final url = Uri.parse('https://172.20.10.2:7083/api/auth/login');
     //final url = Uri.parse('https://10.0.2.2:7083/api/auth/login');
     final response = await http.post(
       url,
@@ -102,13 +102,13 @@ class AuthService {
     Uri url;
 
     if (role == 'Client') {
-      url = Uri.parse('https://192.168.1.10:7083/api/clients/$userId');
+      url = Uri.parse('https://172.20.10.2:7083/api/clients/$userId');
       //url = Uri.parse('https://10.0.2.2:7083/api/clients/$userId');
     } else if (role == 'Trainer') {
-      url = Uri.parse('http://192.168.1.10:5084/api/trainers/$userId');
+      url = Uri.parse('http://172.20.10.2:5084/api/trainers/$userId');
       //url = Uri.parse('http://10.0.2.2:5084/api/trainers/$userId');
     } else {
-      url = Uri.parse('https://192.168.1.10:7083/api/users/$userId');
+      url = Uri.parse('https://172.20.10.2:7083/api/users/$userId');
       //url = Uri.parse('https://10.0.2.2:7083/api/users/$userId');
     }
 
@@ -131,7 +131,7 @@ class AuthService {
   }
 
   Future<bool> signUp(User user) async {
-    final url = Uri.parse('https://192.168.1.10:7083/api/auth/register');
+    final url = Uri.parse('https://172.20.10.2:7083/api/auth/register');
     //final url = Uri.parse('https://10.0.2.2:7083/api/auth/register');
     final response = await http.post(
       url,
@@ -158,7 +158,7 @@ class AuthService {
   }
 
   Future<bool> getClientsById(String jmbg) async {
-    final url = Uri.parse('https://192.168.1.10:7083/api/clients/$jmbg');
+    final url = Uri.parse('https://172.20.10.2:7083/api/clients/$jmbg');
     //final url = Uri.parse('https://10.0.2.2:7083/api/clients/$jmbg');
     final response = await http.get(url);
 
@@ -173,7 +173,7 @@ class AuthService {
   }
 
   Future<List<User>> fetchTrainers() async {
-    final url = Uri.parse('http://192.168.1.10:5084/api/trainers');
+    final url = Uri.parse('http://172.20.10.2:5084/api/trainers');
     //final url = Uri.parse('http://10.0.2.2:5084/api/trainers');
     final response = await http.get(
       url,
@@ -196,7 +196,7 @@ class AuthService {
   }
 
   Future<List<User>> fetchClients() async {
-    final url = Uri.parse('https://192.168.1.10:7083/api/clients');
+    final url = Uri.parse('https://172.20.10.2:7083/api/clients');
     //final url = Uri.parse('https://10.0.2.2:7083/api/clients');
     final response = await http.get(url);
 
@@ -219,7 +219,7 @@ class AuthService {
   }
 
   Future<List<User>> searchClients(String searchTerm) async {
-    final url = Uri.parse('https://192.168.1.10:7083/api/clients/search?searchTerm=$searchTerm');
+    final url = Uri.parse('https://172.20.10.2:7083/api/clients/search?searchTerm=$searchTerm');
     //final url = Uri.parse('https://10.0.2.2:7083/api/clients/search?searchTerm=$searchTerm');
     final response = await http.get(url);
 
@@ -242,7 +242,7 @@ class AuthService {
   }
 
   Future<void> updateClient(User user) async {
-    final url = Uri.parse('https://192.168.1.10:7083/api/clients/${user.jmbg}');
+    final url = Uri.parse('https://172.20.10.2:7083/api/clients/${user.jmbg}');
     //final url = Uri.parse('https://10.0.2.2:7083/api/clients/${user.jmbg}');
     final response = await http.put(
       url,
@@ -265,7 +265,7 @@ class AuthService {
   }
 
   Future<void> updateTrainer(User user) async {
-    final url = Uri.parse('https://192.168.1.10:7083/api/trainers/${user.jmbg}');
+    final url = Uri.parse('https://172.20.10.2:7083/api/trainers/${user.jmbg}');
     //final url = Uri.parse('https://10.0.2.2:7083/api/trainers/${user.jmbg}');
     final response = await http.put(
       url,

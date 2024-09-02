@@ -4,7 +4,7 @@ import 'package:fytness_system/models/training_program.dart';
 import 'package:http/http.dart' as http;
 
 class TrainingProgramService {
-  final String baseUrl = 'https://192.168.1.10:7083/api/training-programs';
+  final String baseUrl = 'https://172.20.10.2:7083/api/training-programs';
   //final String baseUrl = 'https://10.0.2.2:7083/api/training-programs';
 
 

@@ -19,7 +19,7 @@ class Sessions extends StatefulWidget {
 }
 
 class _SessionsState extends State<Sessions> {
-  final String baseUrl = 'https://192.168.1.10:7083/api';
+  final String baseUrl = 'https://172.20.10.2:7083/api';
   //final String baseUrl = 'https://10.0.2.2:7083/api';
   late Future<List<Room>> _rooms;
   late Future<List<User>> _trainers;
@@ -32,7 +32,7 @@ class _SessionsState extends State<Sessions> {
   TimeOfDay? _selectedTime;
 
   final TextEditingController _durationController = TextEditingController(text: '60');
-  final TextEditingController _capacityController = TextEditingController(text: '20');
+  final TextEditingController _capacityController = TextEditingController(text: '10');
 
   @override
   void initState() {

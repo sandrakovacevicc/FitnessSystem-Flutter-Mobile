@@ -14,7 +14,7 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   QRViewController? _qrController;
   final ReservationService _reservationService = ReservationService(
-    baseUrl: 'https://192.168.1.10:7083/api',
+    baseUrl: 'https://172.20.10.2:7083/api',
   );
 
   bool _isProcessing = false;

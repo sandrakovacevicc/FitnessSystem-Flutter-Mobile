@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:fytness_system/models/user.dart';
 import 'package:http/http.dart' as http;
 import 'package:fytness_system/models/reservation.dart';
 import 'package:intl/intl.dart';
@@ -24,6 +25,7 @@ class ReservationService {
       'time': time,
       'status': status,
     };
+
 
     try {
       final response = await http.post(
@@ -110,6 +112,33 @@ class ReservationService {
       } else {
         throw Exception('Error confirming reservation: No error message provided');
       }
+    }
+  }
+  Future<List<User>> fetchConfirmedClientsBySessionId(int sessionId) async {
+    final url = Uri.parse('$baseUrl/reservations/sessions/$sessionId/confirmed-clients');
+
+    try {
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        final List<dynamic> jsonResponse = json.decode(response.body);
+
+        if (jsonResponse.isEmpty) {
+          print('Nema potvrđenih klijenata za session $sessionId.');
+          return [];
+        }
+
+        return jsonResponse.map((data) => User.fromJson(data)).toList();
+      } else if (response.statusCode == 404) {
+        print('Nema potvrđenih klijenata za session $sessionId.');
+        return [];
+      } else {
+        print('Greška: ${response.statusCode} - ${response.body}');
+        throw Exception('Neuspelo preuzimanje potvrđenih klijenata: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Uhvaćena greška: $e');
+      throw Exception('Greška pri preuzimanju potvrđenih klijenata: $e');
     }
   }
 

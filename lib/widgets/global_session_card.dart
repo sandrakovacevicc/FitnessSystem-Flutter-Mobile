@@ -119,7 +119,7 @@ class SessionCard extends StatelessWidget {
                   '${session.capacity} Spaces left',
                   style: const TextStyle(
                     color: Colors.white,
-                    fontSize: 12,
+                    fontSize: 10,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
